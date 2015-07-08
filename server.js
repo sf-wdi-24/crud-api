@@ -14,11 +14,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // pre-seeded phrase data
 var phrases = [
-  {id: 0, word: 'REPL', definition: 'Read, Eval, Print, Loop'},
-  {id: 1, word: 'Reference Type', definition: 'Any data type that is not a primitive type'},
-  {id: 2, word: 'Constructor', definition: 'Function used as a blueprint to create a new object with specified properties and methods'},
-  {id: 3, word: 'Callback', definition: 'Function passed as an argument to another function'},
-  {id: 4, word: 'Query string', definition: 'A list of parameters (represented as key-value pairs) appended to the end of a URL string'}
+  {id: 1, word: 'REPL', definition: 'Read, Eval, Print, Loop'},
+  {id: 2, word: 'Reference Type', definition: 'Any data type that is not a primitive type'},
+  {id: 3, word: 'Constructor', definition: 'Function used as a blueprint to create a new object with specified properties and methods'},
+  {id: 4, word: 'Callback', definition: 'Function passed as an argument to another function'},
+  {id: 5, word: 'Query string', definition: 'A list of parameters (represented as key-value pairs) appended to the end of a URL string'}
 ];
 
 // ROUTES
@@ -59,9 +59,9 @@ app.put('/phrases/:id', function(req, res) {
 
   // find item in `phrases` array matching the id
 
-  // if form gave us a new word, update the phrase's word
+  // update the phrase's word
 
-  // if form gave us a new definition, update that
+  // update the phrase's definition
 
   // send back edited object
   
