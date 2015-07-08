@@ -47,19 +47,9 @@ $(function() {
 
     // add event-handlers to phrases for updating/deleting
     addEventHandlers: function() {
-      $('#phrase-list')
-        .on('submit', '.update-phrase', function(event) {
-          event.preventDefault();
-          var phraseId = $(this).closest('.phrase').attr('data-id');
-          var updatedWord = $(this).find('.updated-word').val();
-          var updatedDefinition = $(this).find('.updated-definition').val();
-          phrasesController.update(phraseId, updatedWord, updatedDefinition);
-        })
-        .on('click', '.delete-phrase', function(event) {
-          event.preventDefault();
-          var phraseId = $(this).closest('.phrase').attr('data-id');
-          phrasesController.delete(phraseId);
-        });
+      // for update: submit event on `.update-phrase` form
+
+      // for delete: click event on `.delete-phrase` button
     },
 
     setupView: function() {
