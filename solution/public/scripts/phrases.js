@@ -65,6 +65,7 @@ $(function() {
     // add event-handlers to phrases for updating/deleting
     addEventHandlers: function() {
       $('#phrase-list')
+        // for update: submit event on `.update-phrase` form
         .on('submit', '.update-phrase', function(event) {
           event.preventDefault();
           var phraseId = $(this).closest('.phrase').attr('data-id');
@@ -72,6 +73,7 @@ $(function() {
           var updatedDefinition = $(this).find('.updated-definition').val();
           phrasesController.update(phraseId, updatedWord, updatedDefinition);
         })
+        // for delete: click event on `.delete-phrase` button
         .on('click', '.delete-phrase', function(event) {
           event.preventDefault();
           var phraseId = $(this).closest('.phrase').attr('data-id');
