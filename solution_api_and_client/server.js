@@ -56,30 +56,38 @@ app.post('/phrases', function (req, res) {
 app.put('/phrases/:id', function(req, res) {
 
   // set the value of the id
+  var targetId = parseInt(req.params.id);
 
   // find item in `phrases` array matching the id
+  var foundPhrase = _.findWhere(phrases, {id: targetId});
 
   // update the phrase's word
+  foundPhrase.word = req.body.word;
 
   // update the phrase's definition
+  foundPhrase.definition = req.body.definition;
 
   // send back edited object
-
+  res.json(foundPhrase);
 });
 
 // delete phrase
 app.delete('/phrases/:id', function(req, res) {
   
   // set the value of the id
+  var targetId = parseInt(req.params.id);
 
   // find item in `phrases` array matching the id
+  var foundPhrase = _.findWhere(phrases, {id: targetId});
 
   // get the index of the found item
+  var index = phrases.indexOf(foundPhrase);
   
   // remove the item at that index, only remove 1 item
+  phrases.splice(index, 1);
   
   // send back deleted object
-
+  res.json(foundPhrase);
 });
 
 // set server to localhost:3000
