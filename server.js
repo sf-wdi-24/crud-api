@@ -4,7 +4,7 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    _ = require("underscore");
+    underscore = require("underscore");
 
 // serve js and css files from public folder
 app.use(express.static(__dirname + '/public'));
@@ -64,7 +64,7 @@ app.put('/phrases/:id', function(req, res) {
   // update the phrase's definition
 
   // send back edited object
-  
+
 });
 
 // delete phrase
