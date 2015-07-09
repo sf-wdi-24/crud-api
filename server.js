@@ -4,7 +4,7 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    underscore = require("underscore");
+    _ = require("underscore");
 
 // serve js and css files from public folder
 app.use(express.static(__dirname + '/public'));
