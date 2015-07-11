@@ -21,20 +21,23 @@ var phrases = [
   {id: 5, word: 'Query string', definition: 'A list of parameters (represented as key-value pairs) appended to the end of a URL string'}
 ];
 
-// ROUTES
-// root route (serves index.html)
+// STATIC ROUTES
+
+// root (serves index.html)
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/public/views/index.html');
 });
 
+// API ROUTES
+
 // phrases index
-app.get('/phrases', function (req, res) {
+app.get('/api/phrases', function (req, res) {
   // send all phrases as JSON response
   res.json(phrases);
 });
 
 // create new phrase
-app.post('/phrases', function (req, res) {
+app.post('/api/phrases', function (req, res) {
   // grab params (word and definition) from form data
   var newPhrase = req.body;
   
@@ -53,7 +56,7 @@ app.post('/phrases', function (req, res) {
 });
 
 // update phrase
-app.put('/phrases/:id', function(req, res) {
+app.put('/api/phrases/:id', function(req, res) {
 
   // set the value of the id
   var targetId = parseInt(req.params.id);
@@ -72,7 +75,7 @@ app.put('/phrases/:id', function(req, res) {
 });
 
 // delete phrase
-app.delete('/phrases/:id', function(req, res) {
+app.delete('/api/phrases/:id', function(req, res) {
   
   // set the value of the id
   var targetId = parseInt(req.params.id);
