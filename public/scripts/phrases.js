@@ -8,41 +8,47 @@ $(function() {
     // compile phrase template
     template: _.template($('#phrase-template').html()),
 
+    // pass each phrase object through template and append to view
+    render: function(phraseObj) {
+      var $phraseHtml = $(phrasesController.template(phraseObj));
+      $('#phrase-list').append($phraseHtml);
+    },
+
     all: function() {
+      // send GET request to server to get all phrases
       $.get('/api/phrases', function(data) {
         var allPhrases = data;
         
-        // iterate through allPhrases
+        // iterate through each phrase
         _.each(allPhrases, function(phrase) {
-          // pass each phrase object through template and append to view
-          var $phraseHtml = $(phrasesController.template(phrase));
-          $('#phrase-list').append($phraseHtml);
+          phrasesController.render(phrase);
         });
-        // add event-handlers to phrases for updating/deleting
+        
+        // add event-handers for updating/deleting
         phrasesController.addEventHandlers();
       });
     },
 
     create: function(newWord, newDefinition) {
       var phraseData = {word: newWord, definition: newDefinition};
+      
       // send POST request to server to create new phrase
       $.post('/api/phrases', phraseData, function(data) {
-        // pass phrase object through template and append to view
-        var $phraseHtml = $(phrasesController.template(data));
-        $('#phrase-list').append($phraseHtml);
+        var newPhrase = data;
+        phrasesController.render(newPhrase);
       });
     },
 
     update: function(phraseId, updatedWord, updatedDefinition) {
       // send PUT request to server to update phrase
 
-      // pass phrase object through template and append to view
+      // replace existing phrase in view with updated phrase
     },
     
     delete: function(phraseId) {
       // send DELETE request to server to delete phrase
 
-      // remove deleted phrase li from the view
+      // remove deleted phrase from view
     },
 
     // add event-handlers to phrases for updating/deleting
@@ -59,6 +65,8 @@ $(function() {
       // add event-handler to new-phrase form
       $('#new-phrase').on('submit', function(event) {
         event.preventDefault();
+        
+        // create new phrase with form data
         var newWord = $('#new-word').val();
         var newDefinition = $('#new-definition').val();
         phrasesController.create(newWord, newDefinition);
