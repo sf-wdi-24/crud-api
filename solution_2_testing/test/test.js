@@ -11,20 +11,20 @@ describe('GET /', function() {
   });
 });
 
-describe('GET /phrases', function() {
+describe('GET /api/phrases', function() {
   it('should return statusCode 200', function(done) {
-    request(baseUrl + '/phrases', function(error, response, body) {
+    request(baseUrl + '/api/phrases', function(error, response, body) {
       expect(response.statusCode).to.equal(200);
       done();
     });
   });
 });
 
-describe('POST /phrases', function() {
+describe('POST /api/phrases', function() {
   it('should return statusCode 200', function(done) {
     request.post(
       {
-        url: baseUrl + '/phrases',
+        url: baseUrl + '/api/phrases',
         form: {
           word: 'AJAX',
           definition: 'Asynchronous JavaScript and XML'
@@ -38,11 +38,11 @@ describe('POST /phrases', function() {
   });
 });
 
-describe('PUT /phrases/:id', function() {
+describe('PUT /api/phrases/:id', function() {
   it('should return statusCode 200', function(done) {
     request.put(
       {
-        url: baseUrl + '/phrases/1',
+        url: baseUrl + '/api/phrases/1',
         form: {
           word: 'AJAX',
           definition: 'Asynchronous JavaScript and XML'
@@ -56,9 +56,9 @@ describe('PUT /phrases/:id', function() {
   });
 });
 
-describe('DELETE /phrases/:id', function() {
+describe('DELETE /api/phrases/:id', function() {
   it('should return statusCode 200', function(done) {
-    request.del(baseUrl + '/phrases/1', function(error, response, body) {
+    request.del(baseUrl + '/api/phrases/1', function(error, response, body) {
       expect(response.statusCode).to.equal(200);
       done();
     });
