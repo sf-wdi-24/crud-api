@@ -9,7 +9,7 @@ $(function() {
     template: _.template($('#phrase-template').html()),
 
     all: function() {
-      $.get('/phrases', function(data) {
+      $.get('/api/phrases', function(data) {
         var allPhrases = data;
         
         // iterate through allPhrases
@@ -26,7 +26,7 @@ $(function() {
     create: function(newWord, newDefinition) {
       var phraseData = {word: newWord, definition: newDefinition};
       // send POST request to server to create new phrase
-      $.post('/phrases', phraseData, function(data) {
+      $.post('/api/phrases', phraseData, function(data) {
         // pass phrase object through template and append to view
         var $phraseHtml = $(phrasesController.template(data));
         $('#phrase-list').append($phraseHtml);

@@ -9,7 +9,7 @@ $(function() {
     template: _.template($('#phrase-template').html()),
 
     all: function() {
-      $.get('/phrases', function(data) {
+      $.get('/api/phrases', function(data) {
         var allPhrases = data;
         
         // iterate through allPhrases
@@ -26,7 +26,7 @@ $(function() {
     create: function(newWord, newDefinition) {
       var phraseData = {word: newWord, definition: newDefinition};
       // send POST request to server to create new phrase
-      $.post('/phrases', phraseData, function(data) {
+      $.post('/api/phrases', phraseData, function(data) {
         // pass phrase object through template and append to view
         var $phraseHtml = $(phrasesController.template(data));
         $('#phrase-list').append($phraseHtml);
@@ -37,7 +37,7 @@ $(function() {
       // send PUT request to server to update phrase
       $.ajax({
         type: 'PUT',
-        url: '/phrases/' + phraseId,
+        url: '/api/phrases/' + phraseId,
         data: {
           word: updatedWord,
           definition: updatedDefinition
@@ -54,7 +54,7 @@ $(function() {
       // send DELETE request to server to delete phrase
       $.ajax({
         type: 'DELETE',
-        url: '/phrases/' + phraseId,
+        url: '/api/phrases/' + phraseId,
         success: function(data) {
           // remove deleted phrase li from the view
           $('#phrase-' + phraseId).remove();
