@@ -49,7 +49,7 @@ app.post('/api/phrases', function (req, res) {
   });
 });
 
-// show one phrase
+// get one phrase
 app.get('/api/phrases/:id', function (req, res) {
   // set the value of the id
   var targetId = req.params.id;
