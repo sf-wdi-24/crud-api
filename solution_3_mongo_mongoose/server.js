@@ -27,16 +27,11 @@ app.get('/', function (req, res) {
 
 // API ROUTES
 
-// phrases index
+// get all phrases
 app.get('/api/phrases', function (req, res) {
   // find all phrases in db
   Phrase.find(function (err, phrases) {
-    // respond with all phrases or error
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(phrases);
-    }
+    res.json(phrases);
   });
 });
 
@@ -48,56 +43,49 @@ app.post('/api/phrases', function (req, res) {
     definition: req.body.definition
   });
 
+  // save new phrase in db
   newPhrase.save(function (err, savedPhrase) {
-    // respond with `savedPhrase` or error
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(savedPhrase);
-    }
+    res.json(savedPhrase);
   });
 });
 
-// update phrase
-app.put('/api/phrases/:id', function (req, res) {
-
+// show one phrase
+app.get('/api/phrases/:id', function (req, res) {
   // set the value of the id
   var targetId = req.params.id;
 
   // find phrase in db by id
   Phrase.findOne({_id: targetId}, function (err, foundPhrase) {
-    console.log(foundPhrase);
-    if (err) {
-      res.json(err);
-    } else {
-      // update the phrase's word and definition
-      foundPhrase.word = req.body.word;
-      foundPhrase.definition = req.body.definition;
+    res.json(foundPhrase);
+  });
+});
 
-      foundPhrase.save(function (err, savedPhrase) {
-        // respond with `savedPhrase` or error
-        if (err) {
-          res.json(err);
-        } else {
-          res.json(savedPhrase);
-        }
-      });
-    }
+// update phrase
+app.put('/api/phrases/:id', function (req, res) {
+  // set the value of the id
+  var targetId = req.params.id;
+
+  // find phrase in db by id
+  Phrase.findOne({_id: targetId}, function (err, foundPhrase) {
+    // update the phrase's word and definition
+    foundPhrase.word = req.body.word;
+    foundPhrase.definition = req.body.definition;
+
+    // save updated phrase in db
+    foundPhrase.save(function (err, savedPhrase) {
+      res.json(savedPhrase);
+    });
   });
 });
 
 // delete phrase
 app.delete('/api/phrases/:id', function (req, res) {
-  
   // set the value of the id
   var targetId = req.params.id;
 
+  // find phrase in db by id and remove
   Phrase.findOneAndRemove({_id: targetId}, function (err, deletedPhrase) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(deletedPhrase);
-    }
+    res.json(deletedPhrase);
   });
 });
 
