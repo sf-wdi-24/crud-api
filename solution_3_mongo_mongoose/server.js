@@ -4,7 +4,6 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    _ = require('underscore'),
     mongoose = require('mongoose');
 
 // serve js and css files from public folder
