@@ -4,7 +4,7 @@
 var express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
-    _ = require("underscore");
+    _ = require('underscore');
 
 // serve js and css files from public folder
 app.use(express.static(__dirname + '/public'));
@@ -56,7 +56,7 @@ app.post('/api/phrases', function (req, res) {
 });
 
 // update phrase
-app.put('/api/phrases/:id', function(req, res) {
+app.put('/api/phrases/:id', function (req, res) {
 
   // set the value of the id
   var targetId = parseInt(req.params.id);
@@ -75,7 +75,7 @@ app.put('/api/phrases/:id', function(req, res) {
 });
 
 // delete phrase
-app.delete('/api/phrases/:id', function(req, res) {
+app.delete('/api/phrases/:id', function (req, res) {
   
   // set the value of the id
   var targetId = parseInt(req.params.id);
