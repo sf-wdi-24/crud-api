@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect('mongodb://localhost/catchphrasely');
 
 // require `Phrase` model
-var Phrase = require('./models/phrase').Phrase;
+var Phrase = require('./models/phrase');
 
 // STATIC ROUTES
 

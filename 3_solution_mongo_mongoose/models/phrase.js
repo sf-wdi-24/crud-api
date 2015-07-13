@@ -8,4 +8,4 @@ var PhraseSchema = new Schema({
 
 var Phrase = mongoose.model('Phrase', PhraseSchema);
 
-module.exports.Phrase = Phrase;
+module.exports = Phrase;
