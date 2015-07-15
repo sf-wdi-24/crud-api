@@ -22,6 +22,9 @@ $(function() {
         // iterate through each phrase
         _.each(allPhrases, function(phrase) {
           phrasesController.render(phrase);
+          _.each(phrase.notes, function(note) {
+            notesController.render(note, phrase._id);
+          });
         });
         
         // add event-handers for updating/deleting
@@ -118,6 +121,19 @@ $(function() {
         $('#new-word').focus();
       });
     }
+  };
+
+  // `notesController` holds all our note funtionality
+  var notesController = {
+    
+    // compile note template
+    template: _.template($('#note-template').html()),
+
+    // pass each note object through template and append to view
+    render: function(noteObj, phraseId) {
+      var $noteHtml = $(notesController.template(noteObj));
+      $('.note-list[data-phrase-id=' + phraseId + ']').append($noteHtml);
+    },
   };
 
   phrasesController.setupView();
