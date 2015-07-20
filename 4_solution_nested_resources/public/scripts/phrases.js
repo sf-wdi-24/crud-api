@@ -78,6 +78,21 @@ $(function() {
     addEventHandlers: function() {
       $('#phrase-list')
 
+        // new note: submit event on `.new-note` form
+        .on('submit', '.new-note', function(event) {
+          event.preventDefault();
+
+          // find the phrase's id (stored in HTML as `data-id`)
+          var phraseId = $(this).closest('.phrase').attr('data-id');
+
+          // create new note with form data
+          var noteText = $(this).find('.note-text').val();
+          notesController.create(phraseId, noteText);
+
+          // reset the form
+          $(this)[0].reset();
+        })
+
         // for update: submit event on `.update-phrase` form
         .on('submit', '.update-phrase', function(event) {
           event.preventDefault();
@@ -134,6 +149,17 @@ $(function() {
       var $noteHtml = $(notesController.template(noteObj));
       $('.note-list[data-phrase-id=' + phraseId + ']').append($noteHtml);
     },
+
+    create: function(phraseId, newNoteText) {
+      var noteData = {text: newNoteText};
+
+      // send POST request to server to create new note
+      $.post('/api/phrases/' + phraseId + '/notes', noteData, function(data) {
+        var newNote = data;
+        console.log(newNote);
+        notesController.render(newNote, phraseId);
+      });      
+    }
   };
 
   phrasesController.setupView();

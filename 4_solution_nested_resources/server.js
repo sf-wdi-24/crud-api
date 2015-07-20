@@ -104,7 +104,7 @@ app.post('/api/phrases/:phraseId/notes', function (req, res) {
   Phrase.findOne({_id: targetId}, function (err, foundPhrase) {
     foundPhrase.notes.push(newNote);
     foundPhrase.save();
-    res.json(foundPhrase);
+    res.json(newNote);
   });
 });
 

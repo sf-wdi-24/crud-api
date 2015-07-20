@@ -1,4 +1,4 @@
-.edit-pencil {
+.edit-pencil, .note-file {
   color: #000000;
   cursor: pointer;
   float: right;
@@ -6,7 +6,16 @@
   opacity: .2;
 }
 
-.edit-pencil:hover {
+.edit-pencil:hover, .note-file:hover {
   color: #000000;
   opacity: .5;
+  text-decoration: none;
+}
+
+.note-list {
+  padding: 10px 0 0 10px;
+}
+
+.note-list p {
+  margin: 0 0 5px 0;
 }

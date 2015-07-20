@@ -80,7 +80,21 @@
         <form class="form-inline update-phrase">
           <input type="text" class="form-control updated-word" value="<%= word %>" placeholder="New word?">
           <input type="text" class="form-control updated-definition" value="<%= definition %>" placeholder="New definition?">
-          <input type="submit" class="btn btn-default" value="Update phrase">
+          <input type="submit" class="btn btn-default" value="Update Phrase">
+        </form>
+      </div>
+
+      <!-- add note link (file icon) to toggle new note form -->
+      <a class="note-file" data-toggle="collapse" data-target="#new-note-<%= _id %>">
+        <span class="glyphicon glyphicon-file"></span>
+      </a>
+
+      <!-- form to add new note -->
+      <div class="collapse" id="new-note-<%= _id %>">
+        <br>
+        <form class="form-inline new-note">
+          <input type="text" class="form-control note-text" placeholder="Note?">
+          <input type="submit" class="btn btn-default" value="Add Note">
         </form>
       </div>
 
@@ -90,7 +104,7 @@
   </script>
 
   <script type="text/template" id="note-template">
-    <p><%= text %></p>
+    <p class="text-muted">> <%= text %></p>
   </script>
   
 </body>
