@@ -12,7 +12,9 @@ mongoose.connect('mongodb://localhost/crud-api');
 
 // require models and seed data
 var Book = require('./models/book'),
-    seedBooks = require('./seeds/books');
+    Wine = require('./models/wine'),
+    seedBooks = require('./seeds/books'),
+    seedWines = require('./seeds/wines');
 
 
 // API ROUTES
@@ -102,13 +104,29 @@ app.delete('/books/:id', function (req, res) {
   });
 });
 
+// get all wines
+app.get('/wines', function (req, res) {
+  // find all wines in db
+  Wine.find(function (err, wines) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(wines);
+    }
+  });
+});
+
 
 // RESET ROUTES
 
 app.post('/reset', function (req, res) {
   Book.remove({}, function (err, removedBooks) {
     Book.create(seedBooks, function (err, createdBooks) {
-      res.json(createdBooks);
+      Wine.remove({}, function (err, removedWines) {
+        Wine.create(seedWines, function (err, createdWines) {
+          res.json(createdBooks.concat(createdWines));
+        });
+      });
     });
   });
 });

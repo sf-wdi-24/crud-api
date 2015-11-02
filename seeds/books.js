@@ -47,4 +47,4 @@ module.exports = [
     image: "https://s3-us-west-2.amazonaws.com/sandboxapi/to_kill_a_mockingbird.jpg",
     release_date: "July 11, 1960"
   }
-]
+];
