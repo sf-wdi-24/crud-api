@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "mocha"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sf-wdi-24/crud-api.git"
@@ -17,10 +14,7 @@
   },
   "dependencies": {
     "body-parser": "^1.13.2",
-    "chai": "^3.0.0",
     "express": "^4.13.1",
-    "mocha": "^2.2.5",
-    "mongoose": "^4.0.7",
-    "request": "^2.58.0"
+    "mongoose": "^4.0.7"
   }
 }
