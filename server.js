@@ -117,6 +117,81 @@ app.get('/wines', cors(), function (req, res) {
   });
 });
 
+// create new wine
+app.post('/wines', cors(), function (req, res) {
+  // create new wine with form data (`req.body`)
+  var newWine = new Wine(req.body);
+
+  // save new book in db
+  newWine.save(function (err, savedWine) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(savedWine);
+    }
+  });
+});
+
+// get one wine
+app.get('/wines/:id', cors(), function (req, res) {
+  // get wine id from url params (`req.params`)
+  var wineId = req.params.id;
+
+  // find wine in db by id
+  Wine.findOne({ _id: wineId }, function (err, foundWine) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(foundWine);
+    }
+  });
+});
+
+// update wine
+app.put('/wines/:id', cors(), function (req, res) {
+  // get wine id from url params (`req.params`)
+  var wineId = req.params.id;
+
+  // find wine in db by id
+  Wine.findOne({ _id: wineId }, function (err, foundWine) {
+    if (err) {
+      // handle error
+    } else {
+      // update the books's attributes
+      foundWine.name = req.body.name;
+      foundWine.year = req.body.year;
+      foundWine.country = req.body.country;
+      foundWine.description = req.body.description;
+      foundWine.image = req.body.image;
+      foundWine.price = req.body.price;
+
+      // save updated book in db
+      foundWine.save(function (err, savedWine) {
+        if (err) {
+          // handle error
+        } else {
+          res.json(savedWine);
+        }
+      });
+    }
+  });
+});
+
+// delete wine
+app.delete('/wines/:id', cors(), function (req, res) {
+  // get wine id from url params (`req.params`)
+  var wineId = req.params.id;
+
+  // find wine in db by id and remove
+  Wine.findOneAndRemove({ _id: wineId }, function (err, deletedWine) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(deletedWine);
+    }
+  });
+});
+
 
 // RESET ROUTES
 
