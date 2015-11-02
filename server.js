@@ -25,7 +25,7 @@ app.get('/books', cors(), function (req, res) {
   // find all books in db
   Book.find(function (err, books) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(books);
     }
@@ -40,7 +40,7 @@ app.post('/books', cors(), function (req, res) {
   // save new book in db
   newBook.save(function (err, savedBook) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(savedBook);
     }
@@ -55,7 +55,7 @@ app.get('/books/:id', cors(), function (req, res) {
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(foundBook);
     }
@@ -70,7 +70,7 @@ app.put('/books/:id', cors(), function (req, res) {
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       // update the books's attributes
       foundBook.title = req.body.title;
@@ -81,7 +81,7 @@ app.put('/books/:id', cors(), function (req, res) {
       // save updated book in db
       foundBook.save(function (err, savedBook) {
         if (err) {
-          // handle error
+          res.status(500).send(err.message);
         } else {
           res.json(savedBook);
         }
@@ -98,7 +98,7 @@ app.delete('/books/:id', cors(), function (req, res) {
   // find book in db by id and remove
   Book.findOneAndRemove({ _id: bookId }, function (err, deletedBook) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(deletedBook);
     }
@@ -110,7 +110,7 @@ app.get('/wines', cors(), function (req, res) {
   // find all wines in db
   Wine.find(function (err, wines) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(wines);
     }
@@ -125,7 +125,7 @@ app.post('/wines', cors(), function (req, res) {
   // save new book in db
   newWine.save(function (err, savedWine) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(savedWine);
     }
@@ -140,7 +140,7 @@ app.get('/wines/:id', cors(), function (req, res) {
   // find wine in db by id
   Wine.findOne({ _id: wineId }, function (err, foundWine) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(foundWine);
     }
@@ -155,7 +155,7 @@ app.put('/wines/:id', cors(), function (req, res) {
   // find wine in db by id
   Wine.findOne({ _id: wineId }, function (err, foundWine) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       // update the books's attributes
       foundWine.name = req.body.name;
@@ -168,7 +168,7 @@ app.put('/wines/:id', cors(), function (req, res) {
       // save updated book in db
       foundWine.save(function (err, savedWine) {
         if (err) {
-          // handle error
+          res.status(500).send(err.message);
         } else {
           res.json(savedWine);
         }
@@ -185,7 +185,7 @@ app.delete('/wines/:id', cors(), function (req, res) {
   // find wine in db by id and remove
   Wine.findOneAndRemove({ _id: wineId }, function (err, deletedWine) {
     if (err) {
-      // handle error
+      res.status(500).send(err.message);
     } else {
       res.json(deletedWine);
     }
