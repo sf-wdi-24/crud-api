@@ -1,6 +1,7 @@
 var request = require('request'),
     expect = require('chai').expect,
-    baseUrl = 'http://localhost:3000';
+    baseUrl = 'http://localhost:3000',
+    testBook = null;
 
 describe('GET /books', function() {
   it('should return statusCode 200', function (done) {
@@ -24,6 +25,7 @@ describe('POST /books', function() {
         }
       },
       function (error, response, body) {
+        testBook = response.body;
         expect(response.statusCode).to.equal(200);
         done();
       }
@@ -35,7 +37,7 @@ describe('PUT /books/:id', function() {
   it('should return statusCode 200', function (done) {
     request.put(
       {
-        url: baseUrl + '/books/1',
+        url: baseUrl + '/books/' + testBook._id,
         form: {
           title: '',
           author: '',
@@ -53,7 +55,7 @@ describe('PUT /books/:id', function() {
 
 describe('DELETE /books/:id', function() {
   it('should return statusCode 200', function (done) {
-    request.del(baseUrl + '/books/1', function (error, response, body) {
+    request.del(baseUrl + '/books/' + testBook._id, function (error, response, body) {
       expect(response.statusCode).to.equal(200);
       done();
     });
