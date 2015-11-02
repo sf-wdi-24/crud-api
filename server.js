@@ -5,6 +5,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose');
 
+// configure cors (for allowing cross-origin requests)
 app.use(cors());
 
 // configure bodyParser (for receiving form data)
@@ -27,7 +28,7 @@ var Book = require('./models/book'),
 // API ROUTES
 
 // get all books
-app.get('/books', cors(), function (req, res) {
+app.get('/books', function (req, res) {
   // find all books in db
   Book.find(function (err, books) {
     if (err) {
@@ -39,7 +40,7 @@ app.get('/books', cors(), function (req, res) {
 });
 
 // create new book
-app.post('/books', cors(), function (req, res) {
+app.post('/books', function (req, res) {
   // create new book with form data (`req.body`)
   var newBook = new Book(req.body);
 
@@ -54,7 +55,7 @@ app.post('/books', cors(), function (req, res) {
 });
 
 // get one book
-app.get('/books/:id', cors(), function (req, res) {
+app.get('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -69,7 +70,7 @@ app.get('/books/:id', cors(), function (req, res) {
 });
 
 // update book
-app.put('/books/:id', cors(), function (req, res) {
+app.put('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -97,7 +98,7 @@ app.put('/books/:id', cors(), function (req, res) {
 });
 
 // delete book
-app.delete('/books/:id', cors(), function (req, res) {
+app.delete('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -112,7 +113,7 @@ app.delete('/books/:id', cors(), function (req, res) {
 });
 
 // get all wines
-app.get('/wines', cors(), function (req, res) {
+app.get('/wines', function (req, res) {
   // find all wines in db
   Wine.find(function (err, wines) {
     if (err) {
@@ -124,7 +125,7 @@ app.get('/wines', cors(), function (req, res) {
 });
 
 // create new wine
-app.post('/wines', cors(), function (req, res) {
+app.post('/wines', function (req, res) {
   // create new wine with form data (`req.body`)
   var newWine = new Wine(req.body);
 
@@ -139,7 +140,7 @@ app.post('/wines', cors(), function (req, res) {
 });
 
 // get one wine
-app.get('/wines/:id', cors(), function (req, res) {
+app.get('/wines/:id', function (req, res) {
   // get wine id from url params (`req.params`)
   var wineId = req.params.id;
 
@@ -154,7 +155,7 @@ app.get('/wines/:id', cors(), function (req, res) {
 });
 
 // update wine
-app.put('/wines/:id', cors(), function (req, res) {
+app.put('/wines/:id', function (req, res) {
   // get wine id from url params (`req.params`)
   var wineId = req.params.id;
 
@@ -184,7 +185,7 @@ app.put('/wines/:id', cors(), function (req, res) {
 });
 
 // delete wine
-app.delete('/wines/:id', cors(), function (req, res) {
+app.delete('/wines/:id', function (req, res) {
   // get wine id from url params (`req.params`)
   var wineId = req.params.id;
 
