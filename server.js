@@ -1,6 +1,7 @@
 // require express and other modules
 var express = require('express'),
     app = express(),
+    cors = require('cors'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose');
 
@@ -20,7 +21,7 @@ var Book = require('./models/book'),
 // API ROUTES
 
 // get all books
-app.get('/books', function (req, res) {
+app.get('/books', cors(), function (req, res) {
   // find all books in db
   Book.find(function (err, books) {
     if (err) {
@@ -32,7 +33,7 @@ app.get('/books', function (req, res) {
 });
 
 // create new book
-app.post('/books', function (req, res) {
+app.post('/books', cors(), function (req, res) {
   // create new book with form data (`req.body`)
   var newBook = new Book(req.body);
 
@@ -47,7 +48,7 @@ app.post('/books', function (req, res) {
 });
 
 // get one book
-app.get('/books/:id', function (req, res) {
+app.get('/books/:id', cors(), function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -62,7 +63,7 @@ app.get('/books/:id', function (req, res) {
 });
 
 // update book
-app.put('/books/:id', function (req, res) {
+app.put('/books/:id', cors(), function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -90,7 +91,7 @@ app.put('/books/:id', function (req, res) {
 });
 
 // delete book
-app.delete('/books/:id', function (req, res) {
+app.delete('/books/:id', cors(), function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
@@ -105,7 +106,7 @@ app.delete('/books/:id', function (req, res) {
 });
 
 // get all wines
-app.get('/wines', function (req, res) {
+app.get('/wines', cors(), function (req, res) {
   // find all wines in db
   Wine.find(function (err, wines) {
     if (err) {
