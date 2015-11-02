@@ -10,8 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // connect to mongodb
 mongoose.connect('mongodb://localhost/crud-api');
 
-// require `Book` model
-var Book = require('./models/book');
+// require models and seed data
+var Book = require('./models/book'),
+    seedBooks = require('./seeds/books');
 
 
 // API ROUTES
@@ -101,7 +102,19 @@ app.delete('/books/:id', function (req, res) {
   });
 });
 
-// set server to localhost:3000
+
+// RESET ROUTES
+
+app.post('/reset', function (req, res) {
+  Book.remove({}, function (err, removedBooks) {
+    Book.create(seedBooks, function (err, createdBooks) {
+      res.json(createdBooks);
+    });
+  });
+});
+
+
+// listen on port 3000
 app.listen(3000, function () {
   console.log('server started on localhost:3000');
 });
