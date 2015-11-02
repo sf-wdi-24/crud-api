@@ -1,0 +1,9 @@
+.navbar {
+  margin-bottom: 0;
+}
+.navbar-brand {
+  padding: 5px 15px;
+}
+.navbar-brand > img {
+  display: inline-block;
+}

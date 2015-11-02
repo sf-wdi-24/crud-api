@@ -11,6 +11,9 @@ app.use(cors());
 // configure bodyParser (for receiving form data)
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// serve static files from public folder
+app.use(express.static(__dirname + '/public'));
+
 // set view engine to ejs
 app.set('view engine', 'ejs');
 
