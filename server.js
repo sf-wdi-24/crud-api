@@ -5,76 +5,99 @@ var express = require('express'),
     mongoose = require('mongoose');
 
 // configure bodyParser (for receiving form data)
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost/crud-api');
 
-// require `Phrase` model
-var Phrase = require('./models/phrase');
+// require `Book` model
+var Book = require('./models/book');
 
 
 // API ROUTES
 
-// get all phrases
-app.get('/api/phrases', function (req, res) {
-  // find all phrases in db
-  Phrase.find(function (err, phrases) {
-    res.json(phrases);
+// get all books
+app.get('/books', function (req, res) {
+  // find all books in db
+  Book.find(function (err, books) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(books);
+    }
   });
 });
 
-// create new phrase
-app.post('/api/phrases', function (req, res) {
-  // create new phrase with form data (`req.body`)
-  var newPhrase = new Phrase({
-    word: req.body.word,
-    definition: req.body.definition
-  });
+// create new book
+app.post('/books', function (req, res) {
+  // create new book with form data (`req.body`)
+  var newBook = new Book(req.body);
 
-  // save new phrase in db
-  newPhrase.save(function (err, savedPhrase) {
-    res.json(savedPhrase);
-  });
-});
-
-// get one phrase
-app.get('/api/phrases/:id', function (req, res) {
-  // set the value of the id
-  var targetId = req.params.id;
-
-  // find phrase in db by id
-  Phrase.findOne({_id: targetId}, function (err, foundPhrase) {
-    res.json(foundPhrase);
+  // save new book in db
+  newBook.save(function (err, savedBook) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(savedBook);
+    }
   });
 });
 
-// update phrase
-app.put('/api/phrases/:id', function (req, res) {
-  // set the value of the id
-  var targetId = req.params.id;
+// get one book
+app.get('/books/:id', function (req, res) {
+  // get book id from url params (`req.params`)
+  var bookId = req.params.id;
 
-  // find phrase in db by id
-  Phrase.findOne({_id: targetId}, function (err, foundPhrase) {
-    // update the phrase's word and definition
-    foundPhrase.word = req.body.word;
-    foundPhrase.definition = req.body.definition;
-
-    // save updated phrase in db
-    foundPhrase.save(function (err, savedPhrase) {
-      res.json(savedPhrase);
-    });
+  // find book in db by id
+  Book.findOne({ _id: bookId }, function (err, foundBook) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(foundBook);
+    }
   });
 });
 
-// delete phrase
-app.delete('/api/phrases/:id', function (req, res) {
-  // set the value of the id
-  var targetId = req.params.id;
+// update book
+app.put('/books/:id', function (req, res) {
+  // get book id from url params (`req.params`)
+  var bookId = req.params.id;
 
-  // find phrase in db by id and remove
-  Phrase.findOneAndRemove({_id: targetId}, function (err, deletedPhrase) {
-    res.json(deletedPhrase);
+  // find book in db by id
+  Book.findOne({ _id: bookId }, function (err, foundBook) {
+    if (err) {
+      // handle error
+    } else {
+      // update the books's attributes
+      foundBook.title = req.body.title;
+      foundBook.author = req.body.author;
+      foundBook.image = req.body.image;
+      foundBook.releaseDate = req.body.releaseDate;
+
+      // save updated book in db
+      foundBook.save(function (err, savedBook) {
+        if (err) {
+          // handle error
+        } else {
+          res.json(savedBook);
+        }
+      });
+    }
+  });
+});
+
+// delete book
+app.delete('/books/:id', function (req, res) {
+  // get book id from url params (`req.params`)
+  var bookId = req.params.id;
+
+  // find book in db by id and remove
+  Book.findOneAndRemove({ _id: bookId }, function (err, deletedBook) {
+    if (err) {
+      // handle error
+    } else {
+      res.json(deletedBook);
+    }
   });
 });
 
