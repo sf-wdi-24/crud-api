@@ -11,6 +11,9 @@ app.use(cors());
 // configure bodyParser (for receiving form data)
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// set view engine to ejs
+app.set('view engine', 'ejs');
+
 // connect to mongodb
 mongoose.connect(
   process.env.MONGOLAB_URI ||
@@ -200,14 +203,26 @@ app.delete('/wines/:id', function (req, res) {
 });
 
 
-// RESET ROUTES
+// HOME & RESET ROUTES
+
+app.get('/', function (req, res) {
+  res.render('index');
+});
+
+app.get('/reset', function (req, res) {
+  res.render('reset');
+});
 
 app.post('/reset', function (req, res) {
   Book.remove({}, function (err, removedBooks) {
     Book.create(seedBooks, function (err, createdBooks) {
       Wine.remove({}, function (err, removedWines) {
         Wine.create(seedWines, function (err, createdWines) {
-          res.json(createdBooks.concat(createdWines));
+          if (req.params.format === 'json') {
+            res.json(createdBooks.concat(createdWines));
+          } else {
+            res.redirect('/');
+          }
         });
       });
     });
