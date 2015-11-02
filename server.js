@@ -9,7 +9,11 @@ var express = require('express'),
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost/crud-api');
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/crud-api'
+);
 
 // require models and seed data
 var Book = require('./models/book'),
@@ -208,7 +212,7 @@ app.post('/reset', function (req, res) {
 });
 
 
-// listen on port 3000
-app.listen(3000, function () {
-  console.log('server started on localhost:3000');
+// listen on port (production or localhost)
+app.listen(process.env.PORT || 3000, function() {
+  console.log('server started');
 });
