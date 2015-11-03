@@ -68,7 +68,11 @@ app.get('/books/:id', function (req, res) {
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
-      res.status(500).send(err.message);
+      if (err.name === "CastError") {
+        res.status(404).json({error: "No Book found by this ID."});
+      } else {
+        res.status(500).send(err.message);
+      }
     } else {
       res.json(foundBook);
     }
