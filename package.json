@@ -20,6 +20,7 @@
     "cors": "^2.7.1",
     "ejs": "^2.3.4",
     "express": "^4.13.1",
-    "mongoose": "^4.0.7"
+    "mongoose": "^4.0.7",
+    "swagger-express": "1.0.4"
   }
 }
