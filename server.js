@@ -209,11 +209,11 @@ app.delete('/wines/:id', function (req, res) {
 // HOME & RESET ROUTES
 
 app.get('/', function (req, res) {
-  res.render('index');
+  res.render('site/index');
 });
 
 app.get('/reset', function (req, res) {
-  res.render('reset');
+  res.render('site/reset');
 });
 
 app.post('/reset', function (req, res) {
