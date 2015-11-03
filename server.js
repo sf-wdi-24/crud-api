@@ -3,7 +3,8 @@ var express = require('express'),
     app = express(),
     cors = require('cors'),
     bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    swagger = require('swagger-express');
 
 // configure cors (for allowing cross-origin requests)
 app.use(cors());
@@ -16,6 +17,24 @@ app.use(express.static(__dirname + '/public'));
 
 // set view engine to ejs
 app.set('view engine', 'ejs');
+
+// Initialize Swagger global API configuration.
+// NOTE this is only swagger 1.2 whereas swagger 2.0 has great improvements but is more challenging to implement.
+app.use(swagger.init(app, {
+  apiVersion: '0.1a',
+  swaggerVersion: '1.2',
+  swaggerURL: '/docs',
+  swaggerJSON: '/api-docs.json',
+  swaggerUI: './public/swagger/',
+  basePath: 'http://localhost:3000',
+  info: {
+    title: 'crud-api',
+    description: 'RESTful API built with Node, Express, and Mongo.'
+  },
+  apis: ['./server.js'],
+  middleware: function(req, res) {}
+}));
+
 
 // connect to mongodb
 mongoose.connect(
@@ -31,9 +50,21 @@ var Book = require('./models/book'),
     seedWines = require('./seeds/wines');
 
 
-// API ROUTES
+/**
+ * @swagger
+ * resourcePath: /books
+ * description: Books we've got in our library.
+ */
 
-// get all books
+/**
+ * @swagger
+ * path: /
+ * operations:
+ *   -  httpMethod: GET
+ *      summary: List all books available in our library.
+ *      responseClass: Book
+ *      nickname: getBooks
+ */
 app.get('/books', function (req, res) {
   // find all books in db
   Book.find(function (err, books) {
@@ -44,6 +75,17 @@ app.get('/books', function (req, res) {
     }
   });
 });
+
+/**
+ * @swagger
+ * models:
+ *   Book:
+ *     _id: String
+ *     title: String
+ *     author: String
+ *     image: String
+ *     __v: Integer
+ */
 
 // create new book
 app.post('/books', function (req, res) {
