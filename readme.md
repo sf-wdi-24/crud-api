@@ -75,3 +75,7 @@ GET `/wines`
   }
 ]
 ```
+
+## Reset Seed Data
+
+<a href="http://super-crud.herokuapp.com/reset" target="_blank">http://super-crud.herokuapp.com/reset</a>
