@@ -19,10 +19,10 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 // Initialize Swagger global API configuration.
-// NOTE this is only swagger 1.0 whereas swagger 2.0 has great improvements but is more challenging to implement.
+// NOTE this is only swagger 1.2 whereas swagger 2.0 has great improvements but is more challenging to implement.
 app.use(swagger.init(app, {
   apiVersion: '0.1a',
-  swaggerVersion: '1.0',
+  swaggerVersion: '1.2',
   swaggerURL: '/docs',
   swaggerJSON: '/api-docs.json',
   swaggerUI: './public/docs/',
@@ -61,9 +61,9 @@ var Book = require('./models/book'),
  * path: /books/
  * operations:
  *   -  httpMethod: GET
- *      type: Book
+ *      type: BookList
  *      summary: List all books available in our library.
- *      responseClass: Book
+ *      responseClass: BookList
  *      nickname: getBooks
  */
 app.get('/books', function (req, res) {
@@ -80,6 +80,20 @@ app.get('/books', function (req, res) {
 /**
  * @swagger
  * models:
+ *   Meta:
+ *     id: Meta
+ *     properties:
+ *
+ *   BookList:
+ *     id: BookList
+ *     properties:
+ *       meta:
+ *         $ref: Meta
+ *       books:
+ *         type: array
+ *         items:
+ *           $ref: Book
+ *
  *   Book:
  *     id: Book
  *     properties:
