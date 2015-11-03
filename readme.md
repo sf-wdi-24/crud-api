@@ -6,7 +6,7 @@
 
 ## Books Endpoint
 
-| HTTP Verb | URL | Functionality |
+| Request | URL | Action |
 | :--- | :--- | :--- |
 | GET | `/books` | READS all books |
 | POST | `/books` | CREATES new book |
@@ -39,7 +39,7 @@ GET `/books`
 
 ## Wines Endpoint
 
-| HTTP Verb | URL | Functionality |
+| Request | URL | Action |
 | :--- | :--- | :--- |
 | GET | `/wines` | READS all wines |
 | POST | `/wines` | CREATES new wine |
