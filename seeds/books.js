@@ -18,6 +18,12 @@ module.exports = [
     release_date: "April 10, 1925"
   },
   {
+    title: "Hankleberry Finn",
+    author: "Hank Hill",
+    image: "https://media.giphy.com/media/xDRq2yipbOWDC/giphy.gif",
+    release_date: "April 10, 1984"
+  },
+  {
     title: "Lean In",
     author: "Sheryl Sandberg",
     image: "https://cloud.githubusercontent.com/assets/7833470/10892114/865a5b1e-8156-11e5-80d8-79c52dc6d7d5.jpg",
