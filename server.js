@@ -19,13 +19,13 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
 // Initialize Swagger global API configuration.
-// NOTE this is only swagger 1.2 whereas swagger 2.0 has great improvements but is more challenging to implement.
+// NOTE this is only swagger 1.0 whereas swagger 2.0 has great improvements but is more challenging to implement.
 app.use(swagger.init(app, {
   apiVersion: '0.1a',
-  swaggerVersion: '1.2',
+  swaggerVersion: '1.0',
   swaggerURL: '/docs',
   swaggerJSON: '/api-docs.json',
-  swaggerUI: './public/swagger/',
+  swaggerUI: './public/docs/',
   basePath: 'http://localhost:3000',
   info: {
     title: 'crud-api',
@@ -58,9 +58,10 @@ var Book = require('./models/book'),
 
 /**
  * @swagger
- * path: /
+ * path: /books/
  * operations:
  *   -  httpMethod: GET
+ *      type: Book
  *      summary: List all books available in our library.
  *      responseClass: Book
  *      nickname: getBooks
@@ -80,11 +81,20 @@ app.get('/books', function (req, res) {
  * @swagger
  * models:
  *   Book:
- *     _id: String
- *     title: String
- *     author: String
- *     image: String
- *     __v: Integer
+ *     id: Book
+ *     properties:
+ *       _id:
+ *         type: string
+ *         description: Mongo ID of this Book.
+ *       title:
+ *         type: string
+ *       author:
+ *         type: string
+ *       image:
+ *         type: string
+ *       __v:
+ *         type: integer
+ *         format: int64
  */
 
 // create new book
