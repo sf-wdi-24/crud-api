@@ -60,23 +60,30 @@ app.post('/books', function (req, res) {
   });
 });
 
-// get one book
+
+/*
+ * Get a single response object and 404 if it isn't found.
+ * @param err {Object} Error reported from Mongo.
+ * @param foundObject {Object} An Object found by Mongo.
+ */
+function getSingularResponse (err, foundOjbect) {
+    if (err) {
+      if (err.name === "CastError") {
+        res.status(404).json({error: "Nothing found by this ID."});
+      } else {
+        res.status(500).send({error: err.message});
+      }
+    } else {
+      res.json(foundObject);
+    }
+}
+
 app.get('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
   // find book in db by id
-  Book.findOne({ _id: bookId }, function (err, foundBook) {
-    if (err) {
-      if (err.name === "CastError") {
-        res.status(404).json({error: "No Book found by this ID."});
-      } else {
-        res.status(500).send(err.message);
-      }
-    } else {
-      res.json(foundBook);
-    }
-  });
+  Book.findOne({ _id: bookId }, getSingularResponse);
 });
 
 // update book
@@ -155,13 +162,7 @@ app.get('/wines/:id', function (req, res) {
   var wineId = req.params.id;
 
   // find wine in db by id
-  Wine.findOne({ _id: wineId }, function (err, foundWine) {
-    if (err) {
-      res.status(500).send(err.message);
-    } else {
-      res.json(foundWine);
-    }
-  });
+  Wine.findOne({ _id: wineId }, getSingularResponse);
 });
 
 // update wine
