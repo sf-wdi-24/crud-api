@@ -65,16 +65,17 @@ app.post('/books', function (req, res) {
  * Get a single response object and 404 if it isn't found.
  * @param err {Object} Error reported from Mongo.
  * @param foundObject {Object} An Object found by Mongo.
+ * @this Express Response Object
  */
-function getSingularResponse (err, foundOjbect) {
+function getSingularResponse (err, foundObject) {
   if (err) {
     if (err.name === "CastError") {
-      res.status(404).json({ error: "Nothing found by this ID." });
+      this.status(404).json({ error: "Nothing found by this ID." });
     } else {
-      res.status(500).json({ error: err.message });
+      this.status(500).json({ error: err.message });
     }
   } else {
-    res.json(foundObject);
+    this.json(foundObject);
   }
 }
 
@@ -83,7 +84,7 @@ app.get('/books/:id', function (req, res) {
   var bookId = req.params.id;
 
   // find book in db by id
-  Book.findOne({ _id: bookId }, getSingularResponse);
+  Book.findOne({ _id: bookId }, getSingularResponse.bind(res));
 });
 
 // update book
@@ -162,7 +163,7 @@ app.get('/wines/:id', function (req, res) {
   var wineId = req.params.id;
 
   // find wine in db by id
-  Wine.findOne({ _id: wineId }, getSingularResponse);
+  Wine.findOne({ _id: wineId }, getSingularResponse.bind(res));
 });
 
 // update wine
