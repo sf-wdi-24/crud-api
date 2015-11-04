@@ -36,11 +36,11 @@ var Book = require('./models/book'),
 // get all books
 app.get('/books', function (req, res) {
   // find all books in db
-  Book.find(function (err, books) {
+  Book.find(function (err, allBooks) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
-      res.json(books);
+      res.json({ books: allBooks });
     }
   });
 });
@@ -53,26 +53,38 @@ app.post('/books', function (req, res) {
   // save new book in db
   newBook.save(function (err, savedBook) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       res.json(savedBook);
     }
   });
 });
 
-// get one book
+
+/*
+ * Get a single response object and 404 if it isn't found.
+ * @param err {Object} Error reported from Mongo.
+ * @param foundObject {Object} An Object found by Mongo.
+ * @this Express Response Object
+ */
+function getSingularResponse (err, foundObject) {
+  if (err) {
+    if (err.name === "CastError") {
+      this.status(404).json({ error: "Nothing found by this ID." });
+    } else {
+      this.status(500).json({ error: err.message });
+    }
+  } else {
+    this.json(foundObject);
+  }
+}
+
 app.get('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
 
   // find book in db by id
-  Book.findOne({ _id: bookId }, function (err, foundBook) {
-    if (err) {
-      res.status(500).send(err.message);
-    } else {
-      res.json(foundBook);
-    }
-  });
+  Book.findOne({ _id: bookId }, getSingularResponse.bind(res));
 });
 
 // update book
@@ -83,7 +95,7 @@ app.put('/books/:id', function (req, res) {
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       // update the books's attributes
       foundBook.title = req.body.title;
@@ -94,7 +106,7 @@ app.put('/books/:id', function (req, res) {
       // save updated book in db
       foundBook.save(function (err, savedBook) {
         if (err) {
-          res.status(500).send(err.message);
+          res.status(500).json({ error: err.message });
         } else {
           res.json(savedBook);
         }
@@ -111,7 +123,7 @@ app.delete('/books/:id', function (req, res) {
   // find book in db by id and remove
   Book.findOneAndRemove({ _id: bookId }, function (err, deletedBook) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       res.json(deletedBook);
     }
@@ -121,11 +133,11 @@ app.delete('/books/:id', function (req, res) {
 // get all wines
 app.get('/wines', function (req, res) {
   // find all wines in db
-  Wine.find(function (err, wines) {
+  Wine.find(function (err, allWines) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
-      res.json(wines);
+      res.json({ wines: allWines });
     }
   });
 });
@@ -138,7 +150,7 @@ app.post('/wines', function (req, res) {
   // save new book in db
   newWine.save(function (err, savedWine) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       res.json(savedWine);
     }
@@ -151,13 +163,7 @@ app.get('/wines/:id', function (req, res) {
   var wineId = req.params.id;
 
   // find wine in db by id
-  Wine.findOne({ _id: wineId }, function (err, foundWine) {
-    if (err) {
-      res.status(500).send(err.message);
-    } else {
-      res.json(foundWine);
-    }
-  });
+  Wine.findOne({ _id: wineId }, getSingularResponse.bind(res));
 });
 
 // update wine
@@ -168,7 +174,7 @@ app.put('/wines/:id', function (req, res) {
   // find wine in db by id
   Wine.findOne({ _id: wineId }, function (err, foundWine) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       // update the books's attributes
       foundWine.name = req.body.name;
@@ -181,7 +187,7 @@ app.put('/wines/:id', function (req, res) {
       // save updated book in db
       foundWine.save(function (err, savedWine) {
         if (err) {
-          res.status(500).send(err.message);
+          res.status(500).json({ error: err.message });
         } else {
           res.json(savedWine);
         }
@@ -198,7 +204,7 @@ app.delete('/wines/:id', function (req, res) {
   // find wine in db by id and remove
   Wine.findOneAndRemove({ _id: wineId }, function (err, deletedWine) {
     if (err) {
-      res.status(500).send(err.message);
+      res.status(500).json({ error: err.message });
     } else {
       res.json(deletedWine);
     }
