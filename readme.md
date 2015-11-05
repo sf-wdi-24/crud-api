@@ -12,7 +12,7 @@
 | POST | `/books` | CREATES new book |
 | GET | `/books/:id` | READS one book |
 | PUT | `/books/:id` | UPDATES one book |
-| DELETE | `/books/:id` | DESTROYS one book |
+| DELETE | `/books/:id` | DELETES one book |
 
 #### Sample Response
 
@@ -49,7 +49,7 @@ GET `/books`
 | POST | `/wines` | CREATES new wine |
 | GET | `/wines/:id` | READS one wine |
 | PUT | `/wines/:id` | UPDATES one wine |
-| DELETE | `/wines/:id` | DESTROYS one wine |
+| DELETE | `/wines/:id` | DELETES one wine |
 
 #### Sample Response
 
