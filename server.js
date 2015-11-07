@@ -55,7 +55,7 @@ app.post('/books', function (req, res) {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
-      res.json(savedBook);
+      res.status(201).json(savedBook);
     }
   });
 });
@@ -69,13 +69,13 @@ app.post('/books', function (req, res) {
  */
 function getSingularResponse (err, foundObject) {
   if (err) {
-    if (err.name === "CastError") {
+    this.status(500).json({ error: err.message });
+  } else {
+    if (foundObject === null) {
       this.status(404).json({ error: "Nothing found by this ID." });
     } else {
-      this.status(500).json({ error: err.message });
+      this.status(200).json(foundObject);
     }
-  } else {
-    this.json(foundObject);
   }
 }
 
@@ -104,13 +104,7 @@ app.put('/books/:id', function (req, res) {
       foundBook.releaseDate = req.body.releaseDate;
 
       // save updated book in db
-      foundBook.save(function (err, savedBook) {
-        if (err) {
-          res.status(500).json({ error: err.message });
-        } else {
-          res.json(savedBook);
-        }
-      });
+      foundBook.save(getSingularResponse.bind(res));
     }
   });
 });
@@ -121,13 +115,7 @@ app.delete('/books/:id', function (req, res) {
   var bookId = req.params.id;
 
   // find book in db by id and remove
-  Book.findOneAndRemove({ _id: bookId }, function (err, deletedBook) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(deletedBook);
-    }
-  });
+  Book.findOneAndRemove({ _id: bookId }, getSingularResponse.bind(res));
 });
 
 // get all wines
@@ -152,7 +140,7 @@ app.post('/wines', function (req, res) {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
-      res.json(savedWine);
+      res.status(201).json(savedWine);
     }
   });
 });
@@ -185,13 +173,7 @@ app.put('/wines/:id', function (req, res) {
       foundWine.price = req.body.price;
 
       // save updated book in db
-      foundWine.save(function (err, savedWine) {
-        if (err) {
-          res.status(500).json({ error: err.message });
-        } else {
-          res.json(savedWine);
-        }
-      });
+      foundWine.save(getSingularResponse.bind(res));
     }
   });
 });
@@ -202,13 +184,7 @@ app.delete('/wines/:id', function (req, res) {
   var wineId = req.params.id;
 
   // find wine in db by id and remove
-  Wine.findOneAndRemove({ _id: wineId }, function (err, deletedWine) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(deletedWine);
-    }
-  });
+  Wine.findOneAndRemove({ _id: wineId }, getSingularResponse.bind(res));
 });
 
 
@@ -228,7 +204,7 @@ app.post('/reset', function (req, res) {
       Wine.remove({}, function (err, removedWines) {
         Wine.create(seedWines, function (err, createdWines) {
           if (req.params.format === 'json') {
-            res.json(createdBooks.concat(createdWines));
+            res.status(201).json(createdBooks.concat(createdWines));
           } else {
             res.redirect('/');
           }
