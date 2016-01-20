@@ -10,6 +10,7 @@ app.use(cors());
 
 // configure bodyParser (for receiving form data)
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
@@ -91,7 +92,7 @@ app.get('/books/:id', function (req, res) {
 app.put('/books/:id', function (req, res) {
   // get book id from url params (`req.params`)
   var bookId = req.params.id;
-  console.log(req.body);
+
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
