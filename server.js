@@ -96,17 +96,22 @@ app.put('/books/:id', function (req, res) {
   // find book in db by id
   Book.findOne({ _id: bookId }, function (err, foundBook) {
     if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      // update the books's attributes
-      foundBook.title = req.body.title;
-      foundBook.author = req.body.author;
-      foundBook.image = req.body.image;
-      foundBook.releaseDate = req.body.releaseDate;
-
-      // save updated book in db
-      foundBook.save(getSingularResponse.bind(res));
+      return res.status(500).json({ error: err.message });
     }
+
+    if (!foundBook){
+     return res.status(404).json({ error: "Nothing found by this ID." });
+    }
+
+    // update the books's attributes
+    foundBook.title = req.body.title;
+    foundBook.author = req.body.author;
+    foundBook.image = req.body.image;
+    foundBook.releaseDate = req.body.releaseDate;
+
+    // save updated book in db
+    foundBook.save(getSingularResponse.bind(res));
+
   });
 });
 
@@ -163,19 +168,23 @@ app.put('/wines/:id', function (req, res) {
   // find wine in db by id
   Wine.findOne({ _id: wineId }, function (err, foundWine) {
     if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      // update the books's attributes
-      foundWine.name = req.body.name;
-      foundWine.year = req.body.year;
-      foundWine.country = req.body.country;
-      foundWine.description = req.body.description;
-      foundWine.image = req.body.image;
-      foundWine.price = req.body.price;
-
-      // save updated book in db
-      foundWine.save(getSingularResponse.bind(res));
+      return res.status(500).json({ error: err.message });
     }
+
+    if (!foundWine){
+     return res.status(404).json({ error: "Nothing found by this ID." });
+    }
+
+    // update the wine's attributes
+    foundWine.name = req.body.name;
+    foundWine.year = req.body.year;
+    foundWine.country = req.body.country;
+    foundWine.description = req.body.description;
+    foundWine.image = req.body.image;
+    foundWine.price = req.body.price;
+
+    // save updated wine in db
+    foundWine.save(getSingularResponse.bind(res));
   });
 });
 
