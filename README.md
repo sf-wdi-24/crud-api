@@ -82,6 +82,29 @@ GET `/wines`
 }
 ```
 
+#### Sample Response
+
+GET `/pokemon`
+
+```js
+{
+  pokemon: [
+    {
+      "name": "Bulbasaur",
+      "pokedex": "001",
+      "evolves_from": "Egg",
+      "image": "https://upload.wikimedia.org/wikipedia/en/2/28/Pok%C3%A9mon_Bulbasaur_art.png"
+    },
+    {
+      "name": "Venusaur",
+      "pokedex": "003",
+      "evolves_from": "Ivysaur",
+      "image": "https://upload.wikimedia.org/wikipedia/en/d/dd/1200px-003Venusaur.png"
+    }
+  ]
+}
+```
+
 ## Reset Seed Data
 
 <a href="http://super-crud.herokuapp.com/reset" target="_blank">http://super-crud.herokuapp.com/reset</a>
