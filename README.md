@@ -82,6 +82,18 @@ GET `/wines`
 }
 ```
 
+## Pokemon Endpoint
+
+| Request | URL | Action |
+| :--- | :--- | :--- |
+| GET | `/pokemon` | READS all pokemon |
+| POST | `/pokemon` | CREATES new pokemon |
+| GET | `/pokemon/:id` | READS one pokemon |
+| PUT | `/pokemon/:id` | UPDATES one pokemon |
+| DELETE | `/pokemon/:id` | DELETES one pokemon |
+
+> Note that the word "pokemon" is both singular and plural.
+
 #### Sample Response
 
 GET `/pokemon`
