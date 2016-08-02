@@ -28,11 +28,17 @@ mongoose.connect(
 // require models and seed data
 var Book = require('./models/book'),
     Wine = require('./models/wine'),
+    Pokemon = require('./models/pokemon'),
     seedBooks = require('./seeds/books'),
-    seedWines = require('./seeds/wines');
+    seedWines = require('./seeds/wines'),
+    seedPokemon = require('./seeds/pokemon');
 
 
 // API ROUTES
+
+/*
+ * BOOK API ENDPOINTS
+ */
 
 // get all books
 app.get('/books', function (req, res) {
@@ -124,6 +130,10 @@ app.delete('/books/:id', function (req, res) {
   Book.findOneAndRemove({ _id: bookId }, getSingularResponse.bind(res));
 });
 
+/*
+ * WINE API ENDPOINTS
+ */
+
 // get all wines
 app.get('/wines', function (req, res) {
   // find all wines in db
@@ -198,6 +208,82 @@ app.delete('/wines/:id', function (req, res) {
 });
 
 
+/*
+ * POKEMON API ENDPOINTS
+ */
+
+// get all pokemon
+app.get('/pokemon', function (req, res) {
+  // find all pokemon in db
+  Pokemon.find(function (err, allPokemons) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json({ pokemon: allPokemons });
+    }
+  });
+});
+
+// create new pokemon
+app.post('/pokemon', function (req, res) {
+  // create new pokemon with form data (`req.body`)
+  var newPokemon = new Pokemon(req.body);
+
+  // save new book in db
+  newPokemon.save(function (err, savedPokemon) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(201).json(savedPokemon);
+    }
+  });
+});
+
+// get one pokemon
+app.get('/pokemon/:id', function (req, res) {
+  // get pokemon id from url params (`req.params`)
+  var pokemonId = req.params.id;
+
+  // find pokemon in db by id
+  Pokemon.findOne({ _id: pokemonId }, getSingularResponse.bind(res));
+});
+
+// update pokemon
+app.put('/pokemon/:id', function (req, res) {
+  // get pokemon id from url params (`req.params`)
+  var pokemonId = req.params.id;
+
+  // find pokemon in db by id
+  Pokemon.findOne({ _id: pokemonId }, function (err, foundPokemon) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (!foundPokemon){
+     return res.status(404).json({ error: "Nothing found by this ID." });
+    }
+
+    // update the pokemon's attributes
+    foundPokemon.name = req.body.name;
+    foundPokemon.pokedex = req.body.pokedex;
+    foundPokemon.evolves_from = req.body.evolves_from;
+    foundPokemon.image = req.body.image;
+
+    // save updated pokemon in db
+    foundPokemon.save(getSingularResponse.bind(res));
+  });
+});
+
+// delete pokemon
+app.delete('/pokemon/:id', function (req, res) {
+  // get pokemon id from url params (`req.params`)
+  var pokemonId = req.params.id;
+
+  // find pokemon in db by id and remove
+  Pokemon.findOneAndRemove({ _id: pokemonId }, getSingularResponse.bind(res));
+});
+
+
 // HOME & RESET ROUTES
 
 app.get('/', function (req, res) {
@@ -213,11 +299,15 @@ app.post('/reset', function (req, res) {
     Book.create(seedBooks, function (err, createdBooks) {
       Wine.remove({}, function (err, removedWines) {
         Wine.create(seedWines, function (err, createdWines) {
-          if (req.params.format === 'json') {
-            res.status(201).json(createdBooks.concat(createdWines));
-          } else {
-            res.redirect('/');
-          }
+          Pokemon.remove({}, function (err, removedPokemons) {
+            Pokemon.create(seedPokemon, function (err, createdPokemons) {
+              if (req.params.format === 'json') {
+                res.status(201).json(createdBooks.concat(createdWines).concat(createdPokemons));
+              } else {
+                res.redirect('/');
+              }
+            });
+          });
         });
       });
     });
