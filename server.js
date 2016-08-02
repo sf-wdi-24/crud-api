@@ -265,11 +265,9 @@ app.put('/pokemon/:id', function (req, res) {
 
     // update the pokemon's attributes
     foundPokemon.name = req.body.name;
-    foundPokemon.year = req.body.year;
-    foundPokemon.country = req.body.country;
-    foundPokemon.description = req.body.description;
+    foundPokemon.pokedex = req.body.pokedex;
+    foundPokemon.evolves_from = req.body.evolves_from;
     foundPokemon.image = req.body.image;
-    foundPokemon.price = req.body.price;
 
     // save updated pokemon in db
     foundPokemon.save(getSingularResponse.bind(res));
