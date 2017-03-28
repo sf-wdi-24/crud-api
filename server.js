@@ -29,9 +29,11 @@ mongoose.connect(
 var Book = require('./models/book'),
     Wine = require('./models/wine'),
     Pokemon = require('./models/pokemon'),
+    Todo = require('./models/todo'),
     seedBooks = require('./seeds/books'),
     seedWines = require('./seeds/wines'),
-    seedPokemon = require('./seeds/pokemon');
+    seedPokemon = require('./seeds/pokemon'),
+    seedTodo = require('./seeds/todos');
 
 
 // API ROUTES
@@ -284,6 +286,85 @@ app.delete('/pokemon/:id', function (req, res) {
 });
 
 
+/*
+ * TODO API ENDPOINTS
+ */
+
+// get all Todo
+app.get('/todos', function (req, res) {
+  // find all Todo in db
+  Todo.find(function (err, allTodos) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json({ todo: allTodos });
+    }
+  });
+});
+
+// create new Todo
+app.post('/todos', function (req, res) {
+  // create new Todo with form data (`req.body`)
+  var newTodo = new Todo(req.body);
+
+  // save new book in db
+  newTodo.save(function (err, savedTodo) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(201).json(savedTodo);
+    }
+  });
+});
+
+// get one Todo
+app.get('/todos/:id', function (req, res) {
+  // get Todo id from url params (`req.params`)
+  var todoId = req.params.id;
+
+  // find pokemon in db by id
+  Todo.findOne({ _id: todoId }, getSingularResponse.bind(res));
+});
+
+// update Todo
+app.put('/todos/:id', function (req, res) {
+  // get Todo id from url params (`req.params`)
+  var todoId = req.params.id;
+
+  // find Todo in db by id
+  Todo.findOne({ _id: todoId }, function (err, foundTodo) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (!foundTodo){
+     return res.status(404).json({ error: "Nothing found by this ID." });
+    }
+
+    // update the Todo's attributes
+    foundTodo.name = req.body.name;
+    foundTodo.pokedex = req.body.pokedex;
+    foundTodon.evolves_from = req.body.evolves_from;
+    foundTodo.image = req.body.image;
+
+    // save updated Todo in db
+    foundTodo.save(getSingularResponse.bind(res));
+  });
+});
+
+// delete Todo
+app.delete('/todos/:id', function (req, res) {
+  // get Todo id from url params (`req.params`)
+  var todoId = req.params.id;
+
+  // find Todo in db by id and remove
+  Todo.findOneAndRemove({ _id: todoId }, getSingularResponse.bind(res));
+});
+
+////////////////////
+//END TODO ENDPOINTS
+////////////////////
+
 // HOME & RESET ROUTES
 
 app.get('/', function (req, res) {
@@ -301,11 +382,15 @@ app.post('/reset', function (req, res) {
         Wine.create(seedWines, function (err, createdWines) {
           Pokemon.remove({}, function (err, removedPokemons) {
             Pokemon.create(seedPokemon, function (err, createdPokemons) {
-              if (req.params.format === 'json') {
-                res.status(201).json(createdBooks.concat(createdWines).concat(createdPokemons));
-              } else {
-                res.redirect('/');
-              }
+              Todo.remove({}, function (err, removedPokemons) {
+                Todo.create(seedTodo, function (err, createdTodos) {
+                  if (req.params.format === 'json') {
+                    res.status(201).json(createdBooks.concat(createdWines).concat(createdPokemons).concat(createdTodos));
+                  } else {
+                    res.redirect('/');
+                  }
+                });
+              });
             });
           });
         });
