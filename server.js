@@ -18,23 +18,15 @@ app.use(express.static(__dirname + '/public'));
 // set view engine to ejs
 app.set('view engine', 'ejs');
 
-// connect to mongodb
-mongoose.connect(
-  process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost/crud-api'
-);
+
 
 // require models and seed data
-var Book = require('./models/book'),
-    Wine = require('./models/wine'),
-    Pokemon = require('./models/pokemon'),
-    Todo = require('./models/todo'),
-    seedBooks = require('./seeds/books'),
+var seedBooks = require('./seeds/books'),
     seedWines = require('./seeds/wines'),
     seedPokemon = require('./seeds/pokemon'),
     seedTodo = require('./seeds/todos');
 
+var ctrl = require('./controllers');
 
 // API ROUTES
 
@@ -43,327 +35,50 @@ var Book = require('./models/book'),
  */
 
 // get all books
-app.get('/books', function (req, res) {
-  // find all books in db
-  Book.find(function (err, allBooks) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ books: allBooks });
-    }
-  });
-});
+app.route('/books').get(ctrl.books.index)
+  .post(ctrl.books.create);
 
-// create new book
-app.post('/books', function (req, res) {
-  // create new book with form data (`req.body`)
-  var newBook = new Book(req.body);
+app.get('/books/nuke', ctrl.books.nuke);
 
-  // save new book in db
-  newBook.save(function (err, savedBook) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedBook);
-    }
-  });
-});
+app.route('/books/:bookId')
+  .get(ctrl.books.show)
+  .put(ctrl.books.update)
+  .delete(ctrl.books.destroy);
 
 
-/*
- * Get a single response object and 404 if it isn't found.
- * @param err {Object} Error reported from Mongo.
- * @param foundObject {Object} An Object found by Mongo.
- * @this Express Response Object
- */
-function getSingularResponse (err, foundObject) {
-  if (err) {
-    this.status(500).json({ error: err.message });
-  } else {
-    if (foundObject === null) {
-      this.status(404).json({ error: "Nothing found by this ID." });
-    } else {
-      this.status(200).json(foundObject);
-    }
-  }
-}
 
-app.get('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
+app.route('/pokemon')
+  .get(ctrl.pokemon.index)
+  .post(ctrl.pokemon.create)
 
-  // find book in db by id
-  Book.findOne({ _id: bookId }, getSingularResponse.bind(res));
-});
+app.get('/pokemon/nuke', ctrl.pokemon.nuke);
 
-// update book
-app.put('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
+app.route('/pokemon/:pokemonId')
+  .get(ctrl.pokemon.show)
+  .put(ctrl.pokemon.update)
+  .delete(ctrl.pokemon.destroy);
 
-  // find book in db by id
-  Book.findOne({ _id: bookId }, function (err, foundBook) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+app.route('/wines')
+  .get(ctrl.wines.index)
+  .post(ctrl.wines.create);
 
-    if (!foundBook){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
+app.get('/wines/nuke', ctrl.wines.nuke);
 
-    // update the books's attributes
-    foundBook.title = req.body.title;
-    foundBook.author = req.body.author;
-    foundBook.image = req.body.image;
-    foundBook.releaseDate = req.body.releaseDate;
+app.route('/wines/:wineId')
+  .get(ctrl.wines.show)
+  .put(ctrl.wines.update)
+  .delete(ctrl.wines.destroy);
 
-    // save updated book in db
-    foundBook.save(getSingularResponse.bind(res));
+app.route('/todos')
+  .get(ctrl.todos.index)
+  .post(ctrl.todos.create);
 
-  });
-});
+app.get('/todos/nuke', ctrl.todos.nuke);
 
-// delete book
-app.delete('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
-
-  // find book in db by id and remove
-  Book.findOneAndRemove({ _id: bookId }, getSingularResponse.bind(res));
-});
-
-/*
- * WINE API ENDPOINTS
- */
-
-// get all wines
-app.get('/wines', function (req, res) {
-  // find all wines in db
-  Wine.find(function (err, allWines) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ wines: allWines });
-    }
-  });
-});
-
-// create new wine
-app.post('/wines', function (req, res) {
-  // create new wine with form data (`req.body`)
-  var newWine = new Wine(req.body);
-
-  // save new book in db
-  newWine.save(function (err, savedWine) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedWine);
-    }
-  });
-});
-
-// get one wine
-app.get('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id
-  Wine.findOne({ _id: wineId }, getSingularResponse.bind(res));
-});
-
-// update wine
-app.put('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id
-  Wine.findOne({ _id: wineId }, function (err, foundWine) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (!foundWine){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
-
-    // update the wine's attributes
-    foundWine.name = req.body.name;
-    foundWine.year = req.body.year;
-    foundWine.country = req.body.country;
-    foundWine.description = req.body.description;
-    foundWine.image = req.body.image;
-    foundWine.price = req.body.price;
-
-    // save updated wine in db
-    foundWine.save(getSingularResponse.bind(res));
-  });
-});
-
-// delete wine
-app.delete('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id and remove
-  Wine.findOneAndRemove({ _id: wineId }, getSingularResponse.bind(res));
-});
-
-
-/*
- * POKEMON API ENDPOINTS
- */
-
-// get all pokemon
-app.get('/pokemon', function (req, res) {
-  // find all pokemon in db
-  Pokemon.find(function (err, allPokemons) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ pokemon: allPokemons });
-    }
-  });
-});
-
-// create new pokemon
-app.post('/pokemon', function (req, res) {
-  // create new pokemon with form data (`req.body`)
-  var newPokemon = new Pokemon(req.body);
-
-  // save new book in db
-  newPokemon.save(function (err, savedPokemon) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedPokemon);
-    }
-  });
-});
-
-// get one pokemon
-app.get('/pokemon/:id', function (req, res) {
-  // get pokemon id from url params (`req.params`)
-  var pokemonId = req.params.id;
-
-  // find pokemon in db by id
-  Pokemon.findOne({ _id: pokemonId }, getSingularResponse.bind(res));
-});
-
-// update pokemon
-app.put('/pokemon/:id', function (req, res) {
-  // get pokemon id from url params (`req.params`)
-  var pokemonId = req.params.id;
-
-  // find pokemon in db by id
-  Pokemon.findOne({ _id: pokemonId }, function (err, foundPokemon) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (!foundPokemon){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
-
-    // update the pokemon's attributes
-    foundPokemon.name = req.body.name;
-    foundPokemon.pokedex = req.body.pokedex;
-    foundPokemon.evolves_from = req.body.evolves_from;
-    foundPokemon.image = req.body.image;
-
-    // save updated pokemon in db
-    foundPokemon.save(getSingularResponse.bind(res));
-  });
-});
-
-// delete pokemon
-app.delete('/pokemon/:id', function (req, res) {
-  // get pokemon id from url params (`req.params`)
-  var pokemonId = req.params.id;
-
-  // find pokemon in db by id and remove
-  Pokemon.findOneAndRemove({ _id: pokemonId }, getSingularResponse.bind(res));
-});
-
-
-/*
- * TODO API ENDPOINTS
- */
-
-// get all Todo
-app.get('/todos', function (req, res) {
-  // find all Todo in db
-  Todo.find(function (err, allTodos) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ todo: allTodos });
-    }
-  });
-});
-
-// create new Todo
-app.post('/todos', function (req, res) {
-  // create new Todo with form data (`req.body`)
-  var newTodo = new Todo(req.body);
-
-  // save new book in db
-  newTodo.save(function (err, savedTodo) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedTodo);
-    }
-  });
-});
-
-// get one Todo
-app.get('/todos/:id', function (req, res) {
-  // get Todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find pokemon in db by id
-  Todo.findOne({ _id: todoId }, getSingularResponse.bind(res));
-});
-
-// update Todo
-app.put('/todos/:id', function (req, res) {
-  // get Todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find Todo in db by id
-  Todo.findOne({ _id: todoId }, function (err, foundTodo) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (!foundTodo){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
-
-    // update the Todo's attributes
-    foundTodo.name = req.body.name;
-    foundTodo.pokedex = req.body.pokedex;
-    foundTodon.evolves_from = req.body.evolves_from;
-    foundTodo.image = req.body.image;
-
-    // save updated Todo in db
-    foundTodo.save(getSingularResponse.bind(res));
-  });
-});
-
-// delete Todo
-app.delete('/todos/:id', function (req, res) {
-  // get Todo id from url params (`req.params`)
-  var todoId = req.params.id;
-
-  // find Todo in db by id and remove
-  Todo.findOneAndRemove({ _id: todoId }, getSingularResponse.bind(res));
-});
-
-////////////////////
-//END TODO ENDPOINTS
-////////////////////
+app.route('/todos/:todoId')
+  .get(ctrl.todos.show)
+  .put(ctrl.todos.update)
+  .delete(ctrl.todos.destroy);
 
 // HOME & RESET ROUTES
 
@@ -375,32 +90,9 @@ app.get('/reset', function (req, res) {
   res.render('site/reset');
 });
 
-app.post('/reset', function (req, res) {
-  Book.remove({}, function (err, removedBooks) {
-    Book.create(seedBooks, function (err, createdBooks) {
-      Wine.remove({}, function (err, removedWines) {
-        Wine.create(seedWines, function (err, createdWines) {
-          Pokemon.remove({}, function (err, removedPokemons) {
-            Pokemon.create(seedPokemon, function (err, createdPokemons) {
-              Todo.remove({}, function (err, removedPokemons) {
-                Todo.create(seedTodo, function (err, createdTodos) {
-                  if (req.params.format === 'json') {
-                    res.status(201).json(createdBooks.concat(createdWines).concat(createdPokemons).concat(createdTodos));
-                  } else {
-                    res.redirect('/');
-                  }
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
 
 
 // listen on port (production or localhost)
-app.listen(process.env.PORT || 4000, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log('server started');
 });

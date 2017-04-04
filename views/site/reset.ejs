@@ -4,9 +4,35 @@
     <div class="container text-center">
       <h1>Reset Seed Data</h1>
       <br>
-      <form action="/reset" method="POST">
-        <button class="btn btn-lg btn-default"><i class="fa fa-refresh"></i> Reset</button>
-      </form>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-sm-3">
+            <form action="/books/nuke" method="GET">
+              <button class="btn btn-lg btn-default"><i class="fa fa-refresh"></i> Reset Books</button>
+            </form>
+          </div>
+
+          <div class="col-sm-3">
+            <form action="/wines/nuke" method="GET">
+              <button class="btn btn-lg btn-default"><i class="fa fa-refresh"></i> Reset Wines</button>
+            </form>
+          </div>
+
+          <div class="col-sm-3">
+            <form action="/todos/nuke" method="GET">
+              <button class="btn btn-lg btn-default"><i class="fa fa-refresh"></i> Reset Todos</button>
+            </form>
+          </div>
+          <div class="col-sm-3">
+            <form action="/pokemon/nuke" method="GET">
+              <button class="btn btn-lg btn-default"><i class="fa fa-refresh"></i> Reset Pokemon</button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 
