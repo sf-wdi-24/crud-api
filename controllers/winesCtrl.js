@@ -37,7 +37,7 @@ module.exports = {
   },
 
   destroy: function (req, res){
-    var wineId = req.params.id;
+    var wineId = req.params.wineId;
     Wine.findOneAndRemove({ _id: wineId }, util.getSingularResponse.bind(res));
   } ,
 

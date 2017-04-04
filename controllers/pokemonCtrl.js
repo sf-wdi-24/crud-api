@@ -36,7 +36,7 @@ module.exports = {
   },
 
   destroy: (req,res) => {
-    var pokemonId = req.params.id;
+    var pokemonId = req.params.pokemonId;
     Pokemon.findOneAndRemove({ _id: pokemonId }, util.getSingularResponse.bind(res));
   } ,
 

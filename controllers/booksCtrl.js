@@ -33,13 +33,13 @@ module.exports = {
   },
 
   show: function (req,res) {
-      var bookId = req.params.bookId;
-      Watcher.tally('SHOW','Book');
-      Book.findOne({ _id: bookId }, util.getSingularResponse.bind(res));
+    var bookId = req.params.bookId;
+    Watcher.tally('SHOW','Book');
+    Book.findOne({ _id: bookId }, util.getSingularResponse.bind(res));
   },
 
   destroy: function (req, res){
-    var bookId = req.params.id;
+    var bookId = req.params.bookId;
     Watcher.tally('DESTROY','Book');
     Book.findOneAndRemove({ _id: bookId }, util.getSingularResponse.bind(res));
   } ,
