@@ -1,14 +1,24 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var actions = ['INDEX', 'SHOW', 'CREATE', 'UPDATE', 'DESTROY'];
-var models = ['Wine', 'Book', 'Pokemon', 'Todo'];
-
-var TodoSchema = new Schema({
-  action: { type: String, enum: actions }},
-  model: { type: String, enum: models }},
+var WatcherSchema = new Schema({
+  crudAction: { type: String, enum: ['INDEX', 'SHOW', 'CREATE', 'UPDATE', 'DESTROY'] },
+  modelType: { type: String, enum: ['Wine', 'Book', 'Pokemon', 'Todo'] },
+  timeStamp: { type: Date, default: Date.Now}
 });
 
-var Todo = mongoose.model('Todo', TodoSchema);
 
-module.exports = Todo;
+// Watcher model will find the method/action combo and increment
+WatcherSchema.statics.tally = function (action, modelType) {
+  this.create({
+    crudAction: action,
+    modelType: modelType
+  }, function (err, foundAction) {
+    if(err){return console.log(err)}
+    return foundAction;
+  });
+};
+
+
+var Watcher = mongoose.model('Watcher', WatcherSchema);
+module.exports = Watcher;

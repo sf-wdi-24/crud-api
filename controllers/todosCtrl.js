@@ -13,7 +13,7 @@ module.exports = {
 
   create: (req, res) => {
       var newTodo = req.body;
-      newTodo.create(newTodo, function (err, savedTodo) {
+      Todo.create(newTodo, function (err, savedTodo) {
         err ? res.status(500).json({ error: err.message }) :
           res.status(201).json(savedTodo);
       });
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   destroy: (req, res) => {
-    var todoId = req.params.id;
+    var todoId = req.params.todoId;
     Todo.findOneAndRemove({ _id: todoId }, util.getSingularResponse.bind(res));
   },
 

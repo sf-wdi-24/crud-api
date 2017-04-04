@@ -1,5 +1,6 @@
 var db = require('../models');
 var Book = db.Book;
+var Watcher = db.Watcher;
 var util = require('./utils');
 var seedBooks = require('../seeds/books');
 
@@ -7,6 +8,7 @@ module.exports = {
   index: function index(req,res) {
     Book.find(function (err, allBooks) {
       err ? res.status(500).json({ error: err.message }) :
+        Watcher.tally('INDEX','Book');
         res.json({ books: allBooks });
     });
   },
