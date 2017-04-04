@@ -20,10 +20,10 @@ module.exports = {
     });
   },
 
-  nuke: (req,res) => {
-    Pokmemon.remove({}, function (err, removedPokemons) {
+  nuke: (req, res) => {
+    Pokemon.remove({}, function (err, removedPokemons) {
       err ? res.status(500).json({ error: err.message }) :
-        Pokemon.create(seedPokemons, function (err, createdPokemons) {
+        Pokemon.create(seedPokemon, function (err, createdPokemons) {
           err ? res.status(500).json({ error: err.message }) :
             res.redirect('/pokemon');
         });
