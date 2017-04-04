@@ -17,6 +17,7 @@ module.exports = {
       var newBook = req.body;
       newBook.create(newBook, function (err, savedBook) {
         err ? res.status(500).json({ error: err.message }) :
+          Watcher.tally('CREATE','Book');
           res.status(201).json(savedBook);
       });
   },
@@ -33,11 +34,13 @@ module.exports = {
 
   show: function (req,res) {
       var bookId = req.params.bookId;
+      Watcher.tally('SHOW','Book');
       Book.findOne({ _id: bookId }, util.getSingularResponse.bind(res));
   },
 
   destroy: function (req, res){
     var bookId = req.params.id;
+    Watcher.tally('DESTROY','Book');
     Book.findOneAndRemove({ _id: bookId }, util.getSingularResponse.bind(res));
   } ,
 
