@@ -44,6 +44,6 @@ module.exports = {
   update: function (req,res) {
     var wineId = req.params.wineId;
     var updateWine = req.body;
-    Wine.findOneAndUpdate({ _id: wineId }, req.body, util.getSingularResponse.bind(res));
+    Wine.findOneAndUpdate({ _id: wineId }, req.body, { new: true }, util.getSingularResponse.bind(res));
   }
 };

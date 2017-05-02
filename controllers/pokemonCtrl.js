@@ -43,6 +43,6 @@ module.exports = {
   update: (req,res) => {
     var pokemonId = req.params.pokemonId;
     var updatePokemon = req.body;
-    Pokemon.findOneAndUpdate({ _id: pokemonId }, req.body, util.getSingularResponse.bind(res));
+    Pokemon.findOneAndUpdate({ _id: pokemonId }, req.body, { new: true }, util.getSingularResponse.bind(res));
   }
 };
