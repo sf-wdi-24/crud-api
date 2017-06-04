@@ -18,14 +18,6 @@ app.use(express.static(__dirname + '/public'));
 // set view engine to ejs
 app.set('view engine', 'ejs');
 
-
-
-// require models and seed data
-var seedBooks = require('./seeds/books'),
-    seedWines = require('./seeds/wines'),
-    seedPokemon = require('./seeds/pokemon'),
-    seedTodo = require('./seeds/todos');
-
 var ctrl = require('./controllers');
 
 // API ROUTES
@@ -91,8 +83,12 @@ app.get('/reset', function (req, res) {
 });
 
 
+module.exports = app;
 
 // listen on port (production or localhost)
-app.listen(process.env.PORT || 3000, function() {
-  console.log('server started');
-});
+// only if this was the main file run (vs required elsewhere)
+if(module.parent === null){
+  app.listen(process.env.PORT || 3000, function() {
+    console.log('server started');
+  });
+}
