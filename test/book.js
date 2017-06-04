@@ -41,7 +41,18 @@ describe('Books Controller', function(){
 			// it('responds with an object that has key "error" with the error message as the value', pending);
 		})
 		describe(context('success'), function(){
-			// it('responds with status code 201', pending);
+			it('responds with status code 201', function(done){
+				request(app)
+				.post('/books')
+    			.send({ title: 'yeah'})
+				.expect(201, done)
+			});
+			it('responds with JSON', function(done){
+				request(app)
+				.post('/books')
+    			.send({ title: 'yeah'})
+				.expect('Content-Type', /json/, done)
+			});
 			// it('creates a new book in the database based on the request body', pending);
 			// it('responds with an object - the newly saved book', pending);
 			// it('updates the Watcher tally for book CREATE requests', pending);
