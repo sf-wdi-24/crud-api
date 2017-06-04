@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "debug": "node-debug server.js"
+    "debug": "node-debug server.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,9 @@
     "mongoose": "^4.9.3"
   },
   "devDependencies": {
-    "node-inspector": "0.12.3"
+    "chai": "^4.0.0",
+    "mocha": "^3.4.2",
+    "node-inspector": "0.12.3",
+    "supertest": "^3.0.0"
   }
 }
