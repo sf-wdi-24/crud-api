@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "description": "Open CRUD API with a variety of resources",
   "main": "server.js",
+  "engines": {
+    "node": "7.10.0"
+  },
   "scripts": {
     "start": "node server.js",
     "debug": "node-debug server.js",
