@@ -30,7 +30,6 @@
   "devDependencies": {
     "chai": "^4.0.0",
     "mocha": "^3.4.2",
-    "node-inspector": "0.12.3",
     "supertest": "^3.0.0"
   },
   "homepage": "https://github.com/sf-wdi-labs/super-crud-api#readme"
