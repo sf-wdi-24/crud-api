@@ -1,7 +1,7 @@
 {
   "name": "super-crud-api",
   "version": "0.0.2",
-  "description": "",
+  "description": "Open CRUD API with a variety of resources",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sf-wdi-labs/super-crud-api.git"
+    "url": "git+https://github.com/sf-wdi-labs/super-crud-api.git"
   },
   "author": "SF WDI 24",
   "license": "ISC",
@@ -25,5 +25,6 @@
   },
   "devDependencies": {
     "node-inspector": "0.12.3"
-  }
+  },
+  "homepage": "https://github.com/sf-wdi-labs/super-crud-api#readme"
 }
