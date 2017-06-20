@@ -1,9 +1,9 @@
 // require express and other modules
-var express = require('express'),
-  app = express(),
-  cors = require('cors'),
-  bodyParser = require('body-parser'),
-  mongoose = require('mongoose');
+var express = require('express');
+var app = express();
+var cors = require('cors');
+var bodyParser = require('body-parser');
+var path = require('path');
 
 // configure cors (for allowing cross-origin requests)
 app.use(cors());
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // serve static files from public folder
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // set view engine to ejs
 app.set('view engine', 'ejs');

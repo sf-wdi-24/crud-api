@@ -1,10 +1,10 @@
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var WatcherSchema = new Schema({
   crudAction: { type: String, enum: ['INDEX', 'SHOW', 'CREATE', 'UPDATE', 'DESTROY'] },
   modelType: { type: String, enum: ['Wine', 'Book', 'Pokemon', 'Todo'] },
-  timeStamp: { type: Date, default: Date.Now}
+  timeStamp: { type: Date, default: Date.Now }
 });
 
 // Watcher model will find the method/action combo and increment

@@ -54,6 +54,6 @@ module.exports = {
   update: (req, res) => {
     var todoId = req.params.todoId;
     var updateTodo = req.body;
-    Todo.findOneAndUpdate({ _id: todoId }, req.body, {new: true}, util.getSingularResponse.bind(res));
+    Todo.findOneAndUpdate({ _id: todoId }, updateTodo, {new: true}, util.getSingularResponse.bind(res));
   }
 };

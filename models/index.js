@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var localDbUrl = process.env.NODE_ENV == 'test'
+var localDbUrl = process.env.NODE_ENV === 'test'
   ? 'mongodb://localhost/super-crud-api-test'
   : 'mongodb://localhost/super-crud-api';
 mongoose.connect(

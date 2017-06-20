@@ -60,7 +60,7 @@ module.exports = {
     var bookId = req.params.bookId;
     var updateBook = req.body;
     Watcher.tally('UPDATE', 'Book');
-    Book.findOneAndUpdate({ _id: bookId }, req.body, { new: true }, util.getSingularResponse.bind(res));
+    Book.findOneAndUpdate({ _id: bookId }, updateBook, { new: true }, util.getSingularResponse.bind(res));
   }
 
 };
