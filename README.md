@@ -28,6 +28,9 @@ As a shorthand to run the linter on the entire project directory, you can use `n
 Ingored directories and files are listed in  [.eslintignore](.eslintignore).
 
 
+## Automated Tests with Mocha, Chai, supertest
+
+The command `npm test` runs all test code. 
 
 ## Base URL
 

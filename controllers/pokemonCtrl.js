@@ -7,27 +7,39 @@ var seedPokemon = require('../seeds/pokemon');
 module.exports = {
   index: (req,res) => {
     Pokemon.find(function (err, allPokemons) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         res.json({ pokemons: allPokemons });
+      }
     });
   },
 
   create: (req,res) => {
     var newPokemon = req.body;
     newPokemon.create(newPokemon, function (err, savedPokemon) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         res.status(201).json(savedPokemon);
+      }
     });
   },
 
   nuke: (req, res) => {
     Pokemon.remove({}, function (err, removedPokemons) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         Pokemon.create(seedPokemon, function (err, createdPokemons) {
-          err ? res.status(500).json({ error: err.message }) :
+          if (err) {
+            res.status(500).json({ error: err.message })
+          } else {
             res.redirect('/pokemon');
+          }
         });
-      });
+      }
+    });
   },
 
   show: (req,res) => {

@@ -3,10 +3,14 @@
   "version": "0.0.2",
   "description": "Open CRUD API with a variety of resources",
   "main": "server.js",
+  "engines": {
+    "node": "7.10.0"
+  },
   "scripts": {
     "start": "node server.js",
     "debug": "node-debug server.js",
-    "lint": "./node_modules/eslint/bin/eslint.js ./; exit 0"
+    "lint": "./node_modules/eslint/bin/eslint.js ./; exit 0",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -32,7 +36,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "node-inspector": "^1.1.1",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "chai": "^4.0.0",
+    "mocha": "^3.4.2",
+    "supertest": "^3.0.0"
   },
   "homepage": "https://github.com/sf-wdi-labs/super-crud-api#readme"
 }
