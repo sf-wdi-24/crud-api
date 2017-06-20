@@ -5,6 +5,13 @@
         "promise"
     ],
     "rules": {
-      "semi": [1, "always"]
+      "arrow-parens": ["error", "always"],
+      "quotes": ["warn", "single"],
+      "semi": ["warn", "always"],
+      "space-before-function-paren": ["warn", "never"],
+      "space-in-parens": "warn",
+      "no-multi-spaces": "warn",
+      "arrow-body-style": ["warn", "always"],
+      "no-multiple-empty-lines": "warn"
     }
 }
