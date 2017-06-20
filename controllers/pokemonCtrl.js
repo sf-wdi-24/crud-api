@@ -11,6 +11,7 @@ module.exports = {
         res.status(500).json({ error: err.message })
       } else {
         res.json({ pokemons: allPokemons });
+      }
     });
   },
 
