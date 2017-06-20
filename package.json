@@ -24,6 +24,10 @@
     "mongoose": "^4.9.3"
   },
   "devDependencies": {
+    "eslint": "^4.0.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "node-inspector": "0.12.3"
   },
   "homepage": "https://github.com/sf-wdi-labs/super-crud-api#readme"
