@@ -1,13 +1,13 @@
 var db = require('../models');
 var Todo = db.Todo;
 var util = require('./utils');
-var seedTodos = require('../seeds/todos')
+var seedTodos = require('../seeds/todos');
 
 module.exports = {
   index: (req, res) => {
-    Todo.find(function (err, allTodos) {
+    Todo.find(function(err, allTodos) {
       if (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ error: err.message });
       } else {
         res.json({ todos: allTodos });
       }
@@ -15,29 +15,29 @@ module.exports = {
   },
 
   create: (req, res) => {
-      var newTodo = req.body;
-      Todo.create(newTodo, function (err, savedTodo) {
-        if (err) {
-          res.status(500).json({ error: err.message })
-        } else {
-          res.status(201).json(savedTodo);
-        }
-      });
+    var newTodo = req.body;
+    Todo.create(newTodo, function(err, savedTodo) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(201).json(savedTodo);
+      }
+    });
   },
 
   show: (req, res) => {
-      var todoId = req.params.todoId;
-      Todo.findOne({ _id: todoId }, util.getSingularResponse.bind(res));
+    var todoId = req.params.todoId;
+    Todo.findOne({ _id: todoId }, util.getSingularResponse.bind(res));
   },
 
   nuke: (req, res) => {
-    Todo.remove({}, function (err, removedTodos) {
+    Todo.remove({}, function(err, removedTodos) {
       if (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ error: err.message });
       } else {
-        Todo.create(seedTodos, function (err, createdTodos) {
+        Todo.create(seedTodos, function(err, createdTodos) {
           if (err) {
-            res.status(500).json({ error: err.message })
+            res.status(500).json({ error: err.message });
           } else {
             res.redirect('/todos');
           }

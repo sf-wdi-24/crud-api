@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 var WatcherSchema = new Schema({
   crudAction: { type: String, enum: ['INDEX', 'SHOW', 'CREATE', 'UPDATE', 'DESTROY'] },
@@ -7,18 +7,16 @@ var WatcherSchema = new Schema({
   timeStamp: { type: Date, default: Date.Now}
 });
 
-
 // Watcher model will find the method/action combo and increment
-WatcherSchema.statics.tally = function (action, modelType) {
+WatcherSchema.statics.tally = function(action, modelType) {
   this.create({
     crudAction: action,
     modelType: modelType
-  }, function (err, foundAction) {
-    if(err){return console.log(err)}
+  }, function(err, foundAction) {
+    if (err) { return console.log(err); }
     return foundAction;
   });
 };
-
 
 var Watcher = mongoose.model('Watcher', WatcherSchema);
 module.exports = Watcher;

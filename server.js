@@ -1,9 +1,9 @@
 // require express and other modules
 var express = require('express'),
-    app = express(),
-    cors = require('cors'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+  app = express(),
+  cors = require('cors'),
+  bodyParser = require('body-parser'),
+  mongoose = require('mongoose');
 
 // configure cors (for allowing cross-origin requests)
 app.use(cors());
@@ -37,11 +37,9 @@ app.route('/books/:bookId')
   .put(ctrl.books.update)
   .delete(ctrl.books.destroy);
 
-
-
 app.route('/pokemon')
   .get(ctrl.pokemon.index)
-  .post(ctrl.pokemon.create)
+  .post(ctrl.pokemon.create);
 
 app.get('/pokemon/nuke', ctrl.pokemon.nuke);
 
@@ -74,20 +72,19 @@ app.route('/todos/:todoId')
 
 // HOME & RESET ROUTES
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.render('site/index');
 });
 
-app.get('/reset', function (req, res) {
+app.get('/reset', function(req, res) {
   res.render('site/reset');
 });
-
 
 module.exports = app;
 
 // listen on port (production or localhost)
 // only if this was the main file run (vs required elsewhere)
-if(module.parent === null){
+if (module.parent === null) {
   app.listen(process.env.PORT || 3000, function() {
     console.log('server started');
   });
