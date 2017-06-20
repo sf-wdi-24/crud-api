@@ -7,29 +7,41 @@ var seedBooks = require('../seeds/books');
 module.exports = {
   index: function index(req,res) {
     Book.find(function (err, allBooks) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         Watcher.tally('INDEX','Book');
         res.json({ books: allBooks });
+      }
     });
   },
 
   create: function (req,res) {
       var newBook = req.body;
       Book.create(newBook, function (err, savedBook) {
-        err ? res.status(500).json({ error: err.message }) :
+        if (err) {
+          res.status(500).json({ error: err.message })
+        } else {
           Watcher.tally('CREATE','Book');
           res.status(201).json(savedBook);
+        }
       });
   },
 
   nuke: function (req, res) {
     Book.remove({}, function (err, removedBooks) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         Book.create(seedBooks, function (err, createdBooks) {
-          err ? res.status(500).json({ error: err.message }) :
+          if (err) {
+            res.status(500).json({ error: err.message })
+          } else {
             res.redirect('/books');
+          }
         });
-      });
+      }
+    });
   },
 
   show: function (req,res) {

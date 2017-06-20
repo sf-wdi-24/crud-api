@@ -6,16 +6,22 @@ var seedTodos = require('../seeds/todos')
 module.exports = {
   index: (req, res) => {
     Todo.find(function (err, allTodos) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         res.json({ todos: allTodos });
+      }
     });
   },
 
   create: (req, res) => {
       var newTodo = req.body;
       Todo.create(newTodo, function (err, savedTodo) {
-        err ? res.status(500).json({ error: err.message }) :
+        if (err) {
+          res.status(500).json({ error: err.message })
+        } else {
           res.status(201).json(savedTodo);
+        }
       });
   },
 
@@ -26,12 +32,18 @@ module.exports = {
 
   nuke: (req, res) => {
     Todo.remove({}, function (err, removedTodos) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         Todo.create(seedTodos, function (err, createdTodos) {
-          err ? res.status(500).json({ error: err.message }) :
+          if (err) {
+            res.status(500).json({ error: err.message })
+          } else {
             res.redirect('/todos');
+          }
         });
-      });
+      }
+    });
   },
 
   destroy: (req, res) => {

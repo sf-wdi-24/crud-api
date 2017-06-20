@@ -8,27 +8,39 @@ var seedWines = require('../seeds/wines')
 module.exports = {
   index: function index(req,res) {
     Wine.find(function (err, allWines) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         res.json({ wines: allWines });
+      }
     });
   },
 
   create: function (req,res) {
-      var newWine = req.body;
-      newWine.create(newWine, function (err, savedWine) {
-        err ? res.status(500).json({ error: err.message }) :
-          res.status(201).json(savedWine);
-      });
+    var newWine = req.body;
+    newWine.create(newWine, function (err, savedWine) {
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
+        res.status(201).json(savedWine);
+      }
+    });
   },
 
   nuke: function (req, res) {
     Wine.remove({}, function (err, removedWines) {
-      err ? res.status(500).json({ error: err.message }) :
+      if (err) {
+        res.status(500).json({ error: err.message })
+      } else {
         Wine.create(seedWines, function (err, createdWines) {
-          err ? res.status(500).json({ error: err.message }) :
+          if (err) {
+            res.status(500).json({ error: err.message })
+          } else {
             res.redirect('/wines');
+          }
         });
-      });
+      }
+    });
   },
 
   show: function (req,res) {
