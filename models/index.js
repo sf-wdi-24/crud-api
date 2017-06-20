@@ -1,8 +1,12 @@
 var mongoose = require("mongoose");
+
+var localDbUrl = process.env.NODE_ENV == 'test' ?  
+  'mongodb://localhost/super-crud-api-test' : 
+  'mongodb://localhost/super-crud-api'
 mongoose.connect(
   process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL ||
-  'mongodb://localhost/super-crud-api'
+  localDbUrl
 );
 var Book = require('./book');
 var Wine = require('./wine');
