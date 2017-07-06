@@ -1,9 +1,9 @@
 // require express and other modules
-var express = require('express'),
-    app = express(),
-    cors = require('cors'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
+var express = require('express');
+var app = express();
+var cors = require('cors');
+var bodyParser = require('body-parser');
+var path = require('path');
 
 // configure cors (for allowing cross-origin requests)
 app.use(cors());
@@ -13,219 +13,79 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // serve static files from public folder
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // set view engine to ejs
 app.set('view engine', 'ejs');
 
-// connect to mongodb
-mongoose.connect(
-  process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost/crud-api'
-);
-
-// require models and seed data
-var Book = require('./models/book'),
-    Wine = require('./models/wine'),
-    seedBooks = require('./seeds/books'),
-    seedWines = require('./seeds/wines');
-
+var ctrl = require('./controllers');
 
 // API ROUTES
 
-// get all books
-app.get('/books', function (req, res) {
-  // find all books in db
-  Book.find(function (err, allBooks) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ books: allBooks });
-    }
-  });
-});
-
-// create new book
-app.post('/books', function (req, res) {
-  // create new book with form data (`req.body`)
-  var newBook = new Book(req.body);
-
-  // save new book in db
-  newBook.save(function (err, savedBook) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedBook);
-    }
-  });
-});
-
-
 /*
- * Get a single response object and 404 if it isn't found.
- * @param err {Object} Error reported from Mongo.
- * @param foundObject {Object} An Object found by Mongo.
- * @this Express Response Object
+ * BOOK API ENDPOINTS
  */
-function getSingularResponse (err, foundObject) {
-  if (err) {
-    this.status(500).json({ error: err.message });
-  } else {
-    if (foundObject === null) {
-      this.status(404).json({ error: "Nothing found by this ID." });
-    } else {
-      this.status(200).json(foundObject);
-    }
-  }
-}
 
-app.get('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
+// get all books
+app.route('/books').get(ctrl.books.index)
+  .post(ctrl.books.create);
 
-  // find book in db by id
-  Book.findOne({ _id: bookId }, getSingularResponse.bind(res));
-});
+app.get('/books/nuke', ctrl.books.nuke);
 
-// update book
-app.put('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
+app.route('/books/:bookId')
+  .get(ctrl.books.show)
+  .put(ctrl.books.update)
+  .delete(ctrl.books.destroy);
 
-  // find book in db by id
-  Book.findOne({ _id: bookId }, function (err, foundBook) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+app.route('/pokemon')
+  .get(ctrl.pokemon.index)
+  .post(ctrl.pokemon.create);
 
-    if (!foundBook){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
+app.get('/pokemon/nuke', ctrl.pokemon.nuke);
 
-    // update the books's attributes
-    foundBook.title = req.body.title;
-    foundBook.author = req.body.author;
-    foundBook.image = req.body.image;
-    foundBook.releaseDate = req.body.releaseDate;
+app.route('/pokemon/:pokemonId')
+  .get(ctrl.pokemon.show)
+  .put(ctrl.pokemon.update)
+  .delete(ctrl.pokemon.destroy);
 
-    // save updated book in db
-    foundBook.save(getSingularResponse.bind(res));
+app.route('/wines')
+  .get(ctrl.wines.index)
+  .post(ctrl.wines.create);
 
-  });
-});
+app.get('/wines/nuke', ctrl.wines.nuke);
 
-// delete book
-app.delete('/books/:id', function (req, res) {
-  // get book id from url params (`req.params`)
-  var bookId = req.params.id;
+app.route('/wines/:wineId')
+  .get(ctrl.wines.show)
+  .put(ctrl.wines.update)
+  .delete(ctrl.wines.destroy);
 
-  // find book in db by id and remove
-  Book.findOneAndRemove({ _id: bookId }, getSingularResponse.bind(res));
-});
+app.route('/todos')
+  .get(ctrl.todos.index)
+  .post(ctrl.todos.create);
 
-// get all wines
-app.get('/wines', function (req, res) {
-  // find all wines in db
-  Wine.find(function (err, allWines) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ wines: allWines });
-    }
-  });
-});
+app.get('/todos/nuke', ctrl.todos.nuke);
 
-// create new wine
-app.post('/wines', function (req, res) {
-  // create new wine with form data (`req.body`)
-  var newWine = new Wine(req.body);
-
-  // save new book in db
-  newWine.save(function (err, savedWine) {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.status(201).json(savedWine);
-    }
-  });
-});
-
-// get one wine
-app.get('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id
-  Wine.findOne({ _id: wineId }, getSingularResponse.bind(res));
-});
-
-// update wine
-app.put('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id
-  Wine.findOne({ _id: wineId }, function (err, foundWine) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (!foundWine){
-     return res.status(404).json({ error: "Nothing found by this ID." });
-    }
-
-    // update the wine's attributes
-    foundWine.name = req.body.name;
-    foundWine.year = req.body.year;
-    foundWine.country = req.body.country;
-    foundWine.description = req.body.description;
-    foundWine.image = req.body.image;
-    foundWine.price = req.body.price;
-
-    // save updated wine in db
-    foundWine.save(getSingularResponse.bind(res));
-  });
-});
-
-// delete wine
-app.delete('/wines/:id', function (req, res) {
-  // get wine id from url params (`req.params`)
-  var wineId = req.params.id;
-
-  // find wine in db by id and remove
-  Wine.findOneAndRemove({ _id: wineId }, getSingularResponse.bind(res));
-});
-
+app.route('/todos/:todoId')
+  .get(ctrl.todos.show)
+  .put(ctrl.todos.update)
+  .delete(ctrl.todos.destroy);
 
 // HOME & RESET ROUTES
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.render('site/index');
 });
 
-app.get('/reset', function (req, res) {
+app.get('/reset', function(req, res) {
   res.render('site/reset');
 });
 
-app.post('/reset', function (req, res) {
-  Book.remove({}, function (err, removedBooks) {
-    Book.create(seedBooks, function (err, createdBooks) {
-      Wine.remove({}, function (err, removedWines) {
-        Wine.create(seedWines, function (err, createdWines) {
-          if (req.params.format === 'json') {
-            res.status(201).json(createdBooks.concat(createdWines));
-          } else {
-            res.redirect('/');
-          }
-        });
-      });
-    });
-  });
-});
-
+module.exports = app;
 
 // listen on port (production or localhost)
-app.listen(process.env.PORT || 3000, function() {
-  console.log('server started');
-});
+// only if this was the main file run (vs required elsewhere)
+if (module.parent === null) {
+  app.listen(process.env.PORT || 3000, function() {
+    console.log('server started');
+  });
+}

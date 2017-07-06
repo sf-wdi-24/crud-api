@@ -1,5 +1,37 @@
 # <img src="https://cloud.githubusercontent.com/assets/7833470/10899314/63829980-8188-11e5-8cdd-4ded5bcb6e36.png" height="60"> Super CRUD
 
+## ESLint for Linting and Auto-fix
+
+This project uses [eslint](http://eslint.org/)! The base configuration is [standard JS](https://standardjs.com/), with additional rules as defined in [.eslintrc.json](.eslintrc.json).  
+
+To run the linter on this project without changing files, use the following command line command:
+
+```
+./node_modules/eslint/bin/eslint.js ./
+```
+
+If you would like ESLint and standard to automatically fix linting issues, use the `--fix` option:
+
+
+```
+./node_modules/eslint/bin/eslint.js ./ --fix
+```
+
+Especially when using the --fix option, prefer to lint one file or directory at a time by specifying a path within the project:
+
+```
+./node_modules/eslint/bin/eslint.js ./controllers/index.js ./controllers/utils.js
+```
+
+As a shorthand to run the linter on the entire project directory, you can use `npm run lint`.
+
+Ingored directories and files are listed in  [.eslintignore](.eslintignore).
+
+
+## Automated Tests with Mocha, Chai, supertest
+
+The command `npm test` runs all test code. 
+
 ## Base URL
 
 <a href="https://super-crud.herokuapp.com" target="_blank">https://super-crud.herokuapp.com</a>
@@ -77,6 +109,41 @@ GET `/wines`
       image: "https://cloud.githubusercontent.com/assets/7833470/10892244/288afc2c-8157-11e5-8ae6-5a9e1c5ce6ac.jpg",
       price: 13,
       __v: 0
+    }
+  ]
+}
+```
+
+## Pokemon Endpoint
+
+| Request | URL | Action |
+| :--- | :--- | :--- |
+| GET | `/pokemon` | READS all pokemon |
+| POST | `/pokemon` | CREATES new pokemon |
+| GET | `/pokemon/:id` | READS one pokemon |
+| PUT | `/pokemon/:id` | UPDATES one pokemon |
+| DELETE | `/pokemon/:id` | DELETES one pokemon |
+
+> Note that the word "pokemon" is both singular and plural.
+
+#### Sample Response
+
+GET `/pokemon`
+
+```js
+{
+  pokemon: [
+    {
+      "name": "Bulbasaur",
+      "pokedex": "001",
+      "evolves_from": "Egg",
+      "image": "https://upload.wikimedia.org/wikipedia/en/2/28/Pok%C3%A9mon_Bulbasaur_art.png"
+    },
+    {
+      "name": "Venusaur",
+      "pokedex": "003",
+      "evolves_from": "Ivysaur",
+      "image": "https://upload.wikimedia.org/wikipedia/en/d/dd/1200px-003Venusaur.png"
     }
   ]
 }

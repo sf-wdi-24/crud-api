@@ -1,29 +1,45 @@
 {
-  "name": "crud-api",
-  "version": "0.0.1",
-  "description": "",
+  "name": "super-crud-api",
+  "version": "0.0.2",
+  "description": "Open CRUD API with a variety of resources",
   "main": "server.js",
+  "engines": {
+    "node": "7.10.0"
+  },
   "scripts": {
     "start": "node server.js",
-    "debug": "node-debug server.js"
+    "debug": "node-debug server.js",
+    "lint": "./node_modules/eslint/bin/eslint.js ./; exit 0",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sf-wdi-24/crud-api.git"
+    "url": "git+https://github.com/sf-wdi-labs/super-crud-api.git"
   },
-  "author": "SF WDI 24",
+  "author": "GA SF WDI",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sf-wdi-24/crud-api/issues"
+    "url": "https://github.com/sf-wdi-labs/super-crud-api/issues"
   },
   "dependencies": {
-    "body-parser": "^1.13.2",
-    "cors": "^2.7.1",
-    "ejs": "^2.3.4",
-    "express": "^4.13.1",
-    "mongoose": "^4.0.7"
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.3"
   },
   "devDependencies": {
-    "node-inspector": "0.12.3"
-  }
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "node-inspector": "^1.1.1",
+    "standard": "^10.0.2",
+    "chai": "^4.0.0",
+    "mocha": "^3.4.2",
+    "supertest": "^3.0.0"
+  },
+  "homepage": "https://github.com/sf-wdi-labs/super-crud-api#readme"
 }
